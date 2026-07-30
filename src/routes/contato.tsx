@@ -308,15 +308,19 @@ function Contato() {
                     {WHATSAPP_DISPLAY}
                   </a>
                 </li>
-                <li className="flex items-start gap-3">
+                <li className="flex min-h-11 items-start gap-3">
                   <Mail size={18} className="mt-0.5 shrink-0 text-gold" />
-                  <a
-                    className="focus-gold rounded transition-colors hover:text-ink"
-                    href="mailto:contato@joiasolucoes.com.br"
-                  >
-                    contato@joiasolucoes.com.br
-                  </a>
+                  <span className="flex min-w-0 flex-wrap items-center gap-x-3 gap-y-1">
+                    <a
+                      className="focus-gold rounded break-all transition-colors hover:text-ink"
+                      href="mailto:contato@joiasolucoes.com.br"
+                    >
+                      contato@joiasolucoes.com.br
+                    </a>
+                    <CopyEmail />
+                  </span>
                 </li>
+
                 <li className="flex items-start gap-3">
                   <MapPin size={18} className="mt-0.5 shrink-0 text-gold" />
                   Atendimento remoto para todo o Brasil
