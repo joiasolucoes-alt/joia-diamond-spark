@@ -225,7 +225,7 @@ function Solucoes() {
             </h2>
           </Reveal>
           <Reveal delay={0.1}>
-            <Accordion type="single" collapsible className="w-full">
+            <Accordion type="single" collapsible defaultValue="faq-0" className="w-full">
               {FAQ.map((f, i) => (
                 <AccordionItem key={f.q} value={`faq-${i}`} className="border-line-light">
                   <AccordionTrigger className="text-left text-base font-semibold text-ink hover:no-underline">
