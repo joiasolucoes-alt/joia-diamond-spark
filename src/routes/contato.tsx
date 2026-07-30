@@ -152,8 +152,8 @@ function Contato() {
                     Selecione uma opção
                   </option>
                   {CHALLENGES.map((c) => (
-                    <option key={c.id} value={c.label}>
-                      {c.label}
+                    <option key={c} value={c}>
+                      {c}
                     </option>
                   ))}
                   <option value="Outro">Outro</option>
