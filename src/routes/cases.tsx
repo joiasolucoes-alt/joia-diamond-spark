@@ -5,12 +5,11 @@ import { ArrowRight, Minus, Plus } from "lucide-react";
 import { Reveal } from "@/components/site/motion";
 import { ActionLink, Eyebrow } from "@/components/site/ActionLink";
 import { CaseMockup } from "@/components/site/CaseMockup";
-import granelSite from "@/assets/granel-piscinas-site.jpg.asset.json";
-import helpsmartSite from "@/assets/helpsmart-site.jpg.asset.json";
 
 const CASE_IMAGES: Record<string, string> = {
-  "granel-piscinas": granelSite.url,
-  helpsmart: helpsmartSite.url,
+  masterflow: "/cases/masterflow-login.png",
+  "granel-piscinas": "/cases/granel-piscinas-home.jpg",
+  helpsmart: "/cases/helpsmart-dashboard.jpg",
 };
 import { CASES } from "@/lib/site";
 
@@ -41,10 +40,7 @@ function CaseBlock({ index }: { index: number }) {
   const [open, setOpen] = useState(index === 0);
 
   return (
-    <article
-      id={c.slug}
-      className="scroll-mt-28 border-t border-line-light py-14 first:border-t-0"
-    >
+    <article id={c.slug} className="scroll-mt-28 border-t border-line-light py-14 first:border-t-0">
       <div className="grid gap-10 lg:grid-cols-[1fr_1fr] lg:items-center">
         <div className={index % 2 === 1 ? "lg:order-last" : ""}>
           <CaseMockup
@@ -55,9 +51,7 @@ function CaseBlock({ index }: { index: number }) {
         </div>
         <div>
           <p className="label-mono text-gold">{c.category}</p>
-          <h2 className="mt-4 text-3xl font-bold tracking-tight text-ink sm:text-4xl">
-            {c.name}
-          </h2>
+          <h2 className="mt-4 text-3xl font-bold tracking-tight text-ink sm:text-4xl">{c.name}</h2>
           <p className="text-body mt-4 max-w-lg text-ink-soft">{c.description}</p>
           <ul className="mt-6 flex flex-wrap gap-2">
             {c.deliveries.map((d) => (
@@ -77,7 +71,11 @@ function CaseBlock({ index }: { index: number }) {
             aria-controls={`detalhes-${c.slug}`}
             className="focus-gold mt-8 inline-flex min-h-12 items-center gap-2 rounded-full border border-line-light px-5 text-sm font-semibold text-ink transition-colors hover:border-gold"
           >
-            {open ? <Minus size={16} className="text-gold" /> : <Plus size={16} className="text-gold" />}
+            {open ? (
+              <Minus size={16} className="text-gold" />
+            ) : (
+              <Plus size={16} className="text-gold" />
+            )}
             {open ? "Ocultar detalhes" : "Ver detalhes do projeto"}
           </button>
         </div>
@@ -133,9 +131,8 @@ function Cases() {
               <span className="editorial text-gold">realidade.</span>
             </h1>
             <p className="text-lead mt-8 max-w-2xl text-on-dark-soft">
-              Descrevemos aqui o que foi construído e como chegamos até lá. Não publicamos
-              números, porcentagens ou resultados financeiros sem dados confirmados junto ao
-              cliente.
+              Descrevemos aqui o que foi construído e como chegamos até lá. Não publicamos números,
+              porcentagens ou resultados financeiros sem dados confirmados junto ao cliente.
             </p>
           </Reveal>
         </div>
