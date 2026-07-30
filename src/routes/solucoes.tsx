@@ -127,7 +127,7 @@ function Solucoes() {
             const Icon = PILLAR_ICONS[pillar.icon as keyof typeof PILLAR_ICONS];
             return (
               <Reveal key={pillar.id} as="section">
-                <div id={pillar.id} className="scroll-mt-28 grid gap-10 lg:grid-cols-[0.85fr_1.15fr]">
+                <div id={pillar.id} className="scroll-mt-44 grid gap-10 lg:grid-cols-[0.85fr_1.15fr]">
                   <div>
                     <span className="label-mono text-ink-soft/70">
                       Pilar {String(i + 1).padStart(2, "0")}
