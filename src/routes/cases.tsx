@@ -49,8 +49,8 @@ function CaseBlock({ index }: { index: number }) {
         <div className={index % 2 === 1 ? "lg:order-last" : ""}>
           <CaseMockup
             variant={VARIANTS[index % 3]}
-            image={c.slug === "granel-piscinas" ? granelSite.url : undefined}
-            imageAlt={`Site institucional da ${c.name}`}
+            image={CASE_IMAGES[c.slug]}
+            imageAlt={`Interface do projeto ${c.name}`}
           />
         </div>
         <div>
