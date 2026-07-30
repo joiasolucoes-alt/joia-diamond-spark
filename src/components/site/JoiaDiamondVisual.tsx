@@ -12,6 +12,8 @@ const EASE = [0.22, 1, 0.36, 1] as const;
 const TILT_X = 16;
 const TILT_Y = 12;
 const SPRING = { stiffness: 90, damping: 22, mass: 0.6 } as const;
+/** Shared loop period so every repeating pulse keeps the same rhythm. */
+const CYCLE = 7;
 
 
 const OUTLINE = "M120 180 L480 180 L520 262 L300 486 L80 262 Z";
@@ -213,7 +215,7 @@ export function JoiaDiamondVisual({ className }: { className?: string }) {
             fill="var(--on-dark-soft)"
             initial={reduce ? false : { opacity: 0 }}
             animate={reduce ? { opacity: 0.22 } : { opacity: [0, 0.85, 0.22] }}
-            transition={{ duration: 2.4, delay: i * 0.045, ease: "easeOut" }}
+            transition={{ duration: 2.2, delay: i * 0.04, ease: EASE }}
           />
         ))}
 
@@ -340,10 +342,10 @@ export function JoiaDiamondVisual({ className }: { className?: string }) {
                   initial={{ strokeDashoffset: 1, opacity: 0 }}
                   animate={{ strokeDashoffset: [1, 0], opacity: [0, 1, 1, 0] }}
                   transition={{
-                    duration: 1.8,
-                    delay: 2.6 + i * 0.12,
+                    duration: 1.6,
+                    delay: 2.4 + i * 0.14,
                     repeat: Infinity,
-                    repeatDelay: 6 + i * 0.4,
+                    repeatDelay: CYCLE - 1.6,
                     ease: "easeInOut",
                   }}
                 />
@@ -384,7 +386,13 @@ export function JoiaDiamondVisual({ className }: { className?: string }) {
             strokeWidth="1"
             initial={{ opacity: 0, scale: 0.9 }}
             animate={{ opacity: [0, 0.16, 0], scale: [0.9, 1.1, 1.2] }}
-            transition={{ duration: 3.2, repeat: Infinity, repeatDelay: 5, delay: 3.5 }}
+            transition={{
+              duration: 3.2,
+              repeat: Infinity,
+              repeatDelay: CYCLE - 3.2,
+              delay: 3.2,
+              ease: EASE,
+            }}
             style={{ transformOrigin: "300px 300px" }}
           />
         )}
