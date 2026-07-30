@@ -24,7 +24,7 @@ export const Route = createFileRoute("/cases")({
     ],
     links: [{ rel: "canonical", href: "/cases" }],
   }),
-  component: Cases;
+  component: Cases,
 });
 
 const VARIANTS = ["data", "system", "site"] as const;
