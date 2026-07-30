@@ -31,7 +31,6 @@ export function Footer() {
               <li key={item.label}>
                 <Link
                   to={item.to}
-                  hash={item.hash}
                   className="focus-gold inline-flex min-h-11 items-center text-sm text-on-dark-soft transition-colors hover:text-on-dark"
                 >
                   {item.label}

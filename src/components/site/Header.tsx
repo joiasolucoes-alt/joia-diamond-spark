@@ -5,18 +5,7 @@ import { Menu, X } from "lucide-react";
 import { Logo } from "./Logo";
 import { ActionLink } from "./ActionLink";
 import { NAV_ITEMS } from "@/lib/site";
-import { useActiveSection } from "@/hooks/useActiveSection";
 import { cn } from "@/lib/utils";
-
-const HOME_SECTIONS = [
-  "dores",
-  "desafios",
-  "solucoes",
-  "como-atuamos",
-  "scanner",
-  "cases",
-  "sobre-joia",
-];
 
 function ReadingProgress() {
   const [progress, setProgress] = useState(0);
@@ -62,7 +51,6 @@ export function Header() {
 
   const pathname = useRouterState({ select: (s) => s.location.pathname });
   const isHome = pathname === "/";
-  const activeSection = useActiveSection(HOME_SECTIONS, isHome);
   const hideLogoAtHero = isHome && !scrolled && !open;
 
   useEffect(() => {
@@ -115,9 +103,7 @@ export function Header() {
   }, [open]);
 
   const isItemActive = (item: (typeof NAV_ITEMS)[number]) => {
-    if (item.hash) return isHome && activeSection === item.hash;
-    if (item.to === "/") return isHome && !activeSection;
-    return pathname.startsWith(item.to);
+    return pathname === item.to || pathname.startsWith(`${item.to}/`);
   };
 
   return (
@@ -151,19 +137,18 @@ export function Header() {
               <Link
                 key={item.label}
                 to={item.to}
-                hash={item.hash}
                 aria-current={active ? "page" : undefined}
                 className={cn(
-                  "focus-gold relative rounded-sm text-sm font-medium transition-colors duration-300 hover:text-on-dark",
-                  active ? "text-on-dark" : "text-on-dark-soft",
+                  "focus-gold group relative rounded-sm py-2 text-sm font-medium transition-colors duration-300 hover:text-gold-light",
+                  active ? "text-gold" : "text-on-dark-soft",
                 )}
               >
                 {item.label}
                 <span
                   aria-hidden
                   className={cn(
-                    "absolute -bottom-1.5 left-0 h-px bg-gold transition-[width] duration-300",
-                    active ? "w-full" : "w-0",
+                    "absolute bottom-0 left-0 h-0.5 w-full origin-left bg-gold shadow-[0_0_10px_rgba(196,163,70,0.45)] transition-transform duration-300 ease-out group-hover:scale-x-100",
+                    active ? "scale-x-100" : "scale-x-0",
                   )}
                 />
               </Link>
@@ -229,18 +214,17 @@ export function Header() {
                     <Link
                       key={item.label}
                       to={item.to}
-                      hash={item.hash}
                       onClick={() => setOpen(false)}
                       aria-current={active ? "page" : undefined}
                       className={cn(
-                        "focus-gold flex min-h-14 items-center gap-3 border-b border-line-dark text-lg font-medium transition-colors",
+                        "focus-gold group flex min-h-14 items-center gap-3 border-b border-line-dark text-lg font-medium transition-colors duration-300 hover:text-gold-light",
                         active ? "text-gold" : "text-on-dark",
                       )}
                     >
                       <span
                         aria-hidden
                         className={cn(
-                          "h-px bg-gold transition-all duration-300",
+                          "h-0.5 bg-gold transition-[width] duration-300 ease-out group-hover:w-5",
                           active ? "w-5" : "w-0",
                         )}
                       />

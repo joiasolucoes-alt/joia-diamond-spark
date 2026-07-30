@@ -10,7 +10,6 @@ export function whatsappLink(message: string) {
 
 export const NAV_ITEMS = [
   { label: "Soluções", to: "/solucoes" as const },
-  { label: "Como atuamos", to: "/" as const, hash: "como-atuamos" },
   { label: "Cases", to: "/cases" as const },
   { label: "Sobre", to: "/sobre" as const },
   { label: "Contato", to: "/contato" as const },
