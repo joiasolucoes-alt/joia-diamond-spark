@@ -141,7 +141,7 @@ export function JoiaDiamondVisual({ className }: { className?: string }) {
           opacity: 1,
           transition: {
             pathLength: { duration, delay, ease: EASE },
-            opacity: { duration: 0.35, delay, ease: "linear" },
+            opacity: { duration: 0.35, delay, ease: "linear" as const },
           },
         };
 
