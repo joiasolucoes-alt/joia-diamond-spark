@@ -112,7 +112,7 @@ function CaseBlock({ index }: { index: number }) {
 function Cases() {
   return (
     <>
-      <section className="surface-night relative overflow-hidden pt-40 pb-24">
+      <section className="surface-night relative overflow-hidden page-hero-pad">
         <div className="grid-tech pointer-events-none absolute inset-0 opacity-60" />
         <div className="shell relative">
           <Reveal>
