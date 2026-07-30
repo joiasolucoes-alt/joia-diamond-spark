@@ -16,7 +16,7 @@ export function Logo({
       hash=""
       aria-label="JoIA Soluções Empresariais — ir para o topo da home"
       className={cn(
-        "group inline-flex items-center focus-gold rounded-sm transition-opacity hover:opacity-90",
+        "group inline-flex min-h-11 min-w-11 items-center rounded-sm transition-opacity hover:opacity-90 focus-gold",
         className,
       )}
     >

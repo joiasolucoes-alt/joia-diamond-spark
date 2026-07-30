@@ -139,7 +139,7 @@ export function Header() {
                 to={item.to}
                 aria-current={active ? "page" : undefined}
                 className={cn(
-                  "focus-gold group relative rounded-sm py-2 text-sm font-medium transition-colors duration-300 hover:text-gold-light",
+                  "focus-gold group relative inline-flex min-h-11 items-center rounded-sm py-2 text-sm font-medium transition-colors duration-300 hover:text-gold-light",
                   active ? "text-gold" : "text-on-dark-soft",
                 )}
               >
@@ -162,7 +162,7 @@ export function Header() {
             variant="gold"
             className={cn(
               "transition-all duration-500",
-              scrolled ? "min-h-10 px-4 py-2 text-[0.8rem]" : "px-5 py-2.5 text-sm",
+              scrolled ? "min-h-11 px-4 py-2 text-[0.8rem]" : "px-5 py-2.5 text-sm",
             )}
           >
             Encontrar oportunidades

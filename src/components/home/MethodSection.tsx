@@ -15,7 +15,10 @@ export function MethodSection() {
   const scaleY = useTransform(progress, (v) => (reduce ? 1 : v));
 
   return (
-    <section id="como-atuamos" className="surface-night section-pad relative overflow-hidden scroll-mt-24">
+    <section
+      id="como-atuamos"
+      className="surface-night section-pad defer-render relative overflow-hidden scroll-mt-24"
+    >
       <div className="grid-tech pointer-events-none absolute inset-0 opacity-50" />
       <div className="shell relative">
         <Reveal>
@@ -26,7 +29,7 @@ export function MethodSection() {
           </h2>
         </Reveal>
 
-        <div ref={ref} className="relative mt-16 pl-10 sm:pl-16">
+        <div ref={ref} className="relative mt-12 pl-10 sm:mt-16 sm:pl-16">
           <div className="absolute top-2 bottom-2 left-[15px] w-px bg-line-dark sm:left-[31px]" />
           <motion.div
             aria-hidden
@@ -34,7 +37,7 @@ export function MethodSection() {
             className="absolute top-2 bottom-2 left-[15px] w-px bg-gradient-to-b from-gold-light via-gold to-gold/20 sm:left-[31px]"
           />
 
-          <ol className="space-y-14">
+          <ol className="space-y-10 sm:space-y-14">
             {METHOD_STEPS.map((step, i) => (
               <li key={step.num} className="relative">
                 <span
@@ -51,10 +54,12 @@ export function MethodSection() {
                 </span>
                 <Reveal delay={i * 0.05}>
                   <p className="label-mono text-gold">{step.num}</p>
-                  <h3 className="mt-3 text-2xl font-bold tracking-tight text-on-dark sm:text-3xl">
+                  <h3 className="mt-2 text-xl font-bold tracking-tight text-on-dark sm:mt-3 sm:text-3xl">
                     {step.title}
                   </h3>
-                  <p className="text-body mt-3 max-w-2xl text-on-dark-soft">{step.text}</p>
+                  <p className="mt-2 max-w-2xl text-[0.975rem] leading-relaxed text-on-dark-soft sm:mt-3 sm:text-lg">
+                    {step.text}
+                  </p>
                 </Reveal>
               </li>
             ))}

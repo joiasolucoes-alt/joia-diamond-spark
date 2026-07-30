@@ -98,7 +98,7 @@ function PillarDetails({
         <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl border border-gold/35 bg-gold/10 text-gold">
           <Icon size={22} strokeWidth={1.35} aria-hidden="true" />
         </span>
-        <span className="font-mono text-[0.62rem] tracking-[0.18em] text-ink-soft">
+        <span className="font-mono text-xs tracking-[0.16em] text-ink-soft">
           {String(PILLARS.indexOf(pillar) + 1).padStart(2, "0")} / 04
         </span>
       </div>
@@ -208,14 +208,14 @@ function SectionTransition() {
   return (
     <div className="relative z-30 border-y border-deep/10 bg-white/75 backdrop-blur-sm">
       <div className="shell flex min-h-16 items-center gap-3 py-4 sm:gap-5">
-        <span className="whitespace-nowrap font-mono text-[0.5rem] tracking-[0.1em] text-ink-soft uppercase sm:text-[0.68rem] sm:tracking-[0.18em]">
+        <span className="whitespace-nowrap font-mono text-[0.7rem] tracking-[0.08em] text-ink-soft uppercase sm:text-xs sm:tracking-[0.16em]">
           // Ponto de partida
         </span>
         <span className="relative h-px flex-1 overflow-visible bg-deep/15" aria-hidden="true">
           <span className="absolute inset-y-0 left-0 w-1/2 bg-gradient-to-r from-gold via-gold-light to-transparent" />
           <span className="absolute top-1/2 left-1/2 h-2.5 w-2.5 -translate-x-1/2 -translate-y-1/2 rotate-45 border border-gold bg-soft" />
         </span>
-        <span className="whitespace-nowrap font-mono text-[0.5rem] tracking-[0.1em] text-deep uppercase sm:text-[0.68rem] sm:tracking-[0.18em]">
+        <span className="whitespace-nowrap font-mono text-[0.7rem] tracking-[0.08em] text-deep uppercase sm:text-xs sm:tracking-[0.16em]">
           // O que construímos
         </span>
       </div>
@@ -342,7 +342,7 @@ function OrbitStage({
               <Icon size={16} strokeWidth={1.4} aria-hidden="true" />
               <span
                 className={[
-                  "font-mono text-[0.57rem] tracking-[0.14em]",
+                  "font-mono text-xs tracking-[0.12em]",
                   isActive ? "text-gold-light" : "text-gold",
                 ].join(" ")}
               >
@@ -443,7 +443,7 @@ function DesktopExperience({
           </div>
         </div>
 
-        <p className="mt-2 text-center font-mono text-[0.58rem] tracking-[0.17em] text-ink-soft/75 uppercase">
+        <p className="mt-2 text-center font-mono text-xs tracking-[0.14em] text-ink-soft uppercase">
           Role para mover a órbita · clique para explorar · a composição avança automaticamente
         </p>
       </div>
@@ -463,7 +463,7 @@ function MobileExperience({
   reducedMotion: boolean;
 }) {
   return (
-    <div className="shell relative py-24 sm:py-28">
+    <div className="shell relative py-16 sm:py-24">
       <div className="relative pr-14">
         <DynamicHeading activeIndex={activeIndex} id="solutions-mobile-title" compact />
         <motion.div
@@ -523,7 +523,7 @@ function MobileExperience({
       </div>
 
       <div className="mt-7 flex items-center justify-between gap-5">
-        <div className="flex items-center gap-2">
+        <div className="flex items-center">
           {PILLARS.map((pillar, index) => (
             <button
               key={pillar.id}
@@ -531,11 +531,16 @@ function MobileExperience({
               onClick={() => onSelect(index)}
               aria-label={`Mostrar ${pillar.title}`}
               aria-current={index === activeIndex ? "step" : undefined}
-              className={[
-                "focus-gold h-2 rounded-full transition-all duration-300",
-                index === activeIndex ? "w-9 bg-deep" : "w-2 bg-deep/15 hover:bg-gold/65",
-              ].join(" ")}
-            />
+              className="focus-gold flex h-11 w-11 items-center justify-center rounded-full"
+            >
+              <span
+                aria-hidden="true"
+                className={[
+                  "h-2 rounded-full transition-all duration-300",
+                  index === activeIndex ? "w-8 bg-deep" : "w-2 bg-deep/15",
+                ].join(" ")}
+              />
+            </button>
           ))}
         </div>
         <span className="font-mono text-xs tracking-[0.15em] text-ink-soft">
@@ -679,6 +684,7 @@ export function SolutionsSection() {
 
     const timer = window.setInterval(() => {
       if (
+        !window.matchMedia("(min-width: 80rem)").matches ||
         !visibleRef.current ||
         pausedRef.current ||
         document.hidden ||

@@ -15,6 +15,7 @@ import { Header } from "@/components/site/Header";
 import { Footer } from "@/components/site/Footer";
 import { ActionLink } from "@/components/site/ActionLink";
 import { JoiaDiamondMark } from "@/components/site/JoiaDiamondVisual";
+import { WHATSAPP_DISPLAY } from "@/lib/site";
 
 function NotFoundComponent() {
   return (
@@ -27,8 +28,8 @@ function NotFoundComponent() {
           Esta página não existe — <span className="editorial text-gold">ainda</span>.
         </h1>
         <p className="text-body mt-5 text-on-dark-soft">
-          O caminho que você tentou acessar não faz parte do site da JoIA. Volte para a home
-          ou conheça as nossas soluções.
+          O caminho que você tentou acessar não faz parte do site da JoIA. Volte para a home ou
+          conheça as nossas soluções.
         </p>
         <div className="mt-9 flex flex-wrap justify-center gap-3">
           <ActionLink to="/" variant="gold">
@@ -96,10 +97,18 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { property: "og:locale", content: "pt_BR" },
       { name: "twitter:card", content: "summary_large_image" },
       { name: "theme-color", content: "#030713" },
+      { name: "application-name", content: "JoIA Soluções Empresariais" },
+      { name: "msapplication-config", content: "/browserconfig.xml" },
+      { name: "msapplication-TileColor", content: "#030713" },
     ],
     links: [
       { rel: "stylesheet", href: appCss },
       { rel: "icon", href: "/favicon.ico", type: "image/x-icon" },
+      { rel: "icon", href: "/favicon-16x16.png", type: "image/png", sizes: "16x16" },
+      { rel: "icon", href: "/favicon-32x32.png", type: "image/png", sizes: "32x32" },
+      { rel: "icon", href: "/favicon-96x96.png", type: "image/png", sizes: "96x96" },
+      { rel: "apple-touch-icon", href: "/apple-icon-180x180.png", sizes: "180x180" },
+      { rel: "manifest", href: "/manifest.webmanifest" },
       { rel: "preconnect", href: "https://fonts.googleapis.com" },
       { rel: "preconnect", href: "https://fonts.gstatic.com", crossOrigin: "anonymous" },
       {
@@ -121,7 +130,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
           contactPoint: [
             {
               "@type": "ContactPoint",
-              telephone: "+55 32 99884-8940",
+              telephone: WHATSAPP_DISPLAY,
               contactType: "sales",
               areaServed: "BR",
               availableLanguage: "Portuguese",
@@ -156,8 +165,14 @@ function RootComponent() {
 
   return (
     <QueryClientProvider client={queryClient}>
+      <a
+        href="#conteudo"
+        className="focus-gold fixed top-3 left-4 z-[100] -translate-y-24 rounded-md bg-white px-4 py-3 text-sm font-semibold text-night shadow-lg transition-transform focus:translate-y-0"
+      >
+        Pular para o conteúdo
+      </a>
       <Header />
-      <main id="conteudo">
+      <main id="conteudo" tabIndex={-1} className="outline-none">
         {/* Required: nested routes render here. */}
         <Outlet />
       </main>

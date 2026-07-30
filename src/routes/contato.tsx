@@ -1,7 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useState } from "react";
 import { z } from "zod";
-import { Check, Copy, Loader2, Mail, MapPin, MessageCircle, Send } from "lucide-react";
+import { Check, Copy, Mail, MapPin, MessageCircle, Send } from "lucide-react";
 import { Reveal } from "@/components/site/motion";
 import { ActionLink, Eyebrow } from "@/components/site/ActionLink";
 import { WHATSAPP_DISPLAY, whatsappLink } from "@/lib/site";
@@ -47,6 +47,7 @@ const schema = z.object({
 });
 
 type Field = keyof z.infer<typeof schema>;
+type SubmitStatus = "idle" | "opened" | "blocked";
 
 const FIELDS: { name: Field; label: string; type?: string; optional?: boolean }[] = [
   { name: "name", label: "Nome" },
@@ -58,25 +59,40 @@ const FIELDS: { name: Field; label: string; type?: string; optional?: boolean }[
 const CONTACT_EMAIL = "contato@joiasolucoes.com.br";
 
 function CopyEmail() {
-  const [copied, setCopied] = useState(false);
+  const [copyStatus, setCopyStatus] = useState<"idle" | "copied" | "failed">("idle");
 
   return (
-    <button
-      type="button"
-      onClick={async () => {
-        try {
-          await navigator.clipboard.writeText(CONTACT_EMAIL);
-          setCopied(true);
-          window.setTimeout(() => setCopied(false), 2000);
-        } catch {
-          setCopied(false);
-        }
-      }}
-      className="focus-gold inline-flex min-h-11 items-center gap-1.5 rounded-full border border-line-light px-3 text-xs font-medium text-ink-soft transition-colors hover:border-gold/60 hover:text-ink"
-    >
-      {copied ? <Check size={13} className="text-gold" /> : <Copy size={13} />}
-      {copied ? "Copiado" : "Copiar"}
-    </button>
+    <span className="flex flex-wrap items-center gap-x-3 gap-y-1">
+      <button
+        type="button"
+        onClick={async () => {
+          try {
+            await navigator.clipboard.writeText(CONTACT_EMAIL);
+            setCopyStatus("copied");
+          } catch {
+            setCopyStatus("failed");
+          }
+          window.setTimeout(() => setCopyStatus("idle"), 3000);
+        }}
+        className="focus-gold inline-flex min-h-11 items-center gap-1.5 rounded-full border border-line-light px-3 text-xs font-medium text-ink-soft transition-colors hover:border-gold/60 hover:text-ink"
+      >
+        {copyStatus === "copied" ? <Check size={13} className="text-gold" /> : <Copy size={13} />}
+        {copyStatus === "copied" ? "Copiado" : "Copiar"}
+      </button>
+      <span
+        aria-live="polite"
+        className={[
+          "text-xs",
+          copyStatus === "failed" ? "text-destructive" : "text-ink-soft/70",
+        ].join(" ")}
+      >
+        {copyStatus === "failed"
+          ? "Não foi possível copiar. Selecione o endereço manualmente."
+          : copyStatus === "copied"
+            ? "E-mail copiado."
+            : ""}
+      </span>
+    </span>
   );
 }
 
@@ -93,8 +109,8 @@ function fieldClass(hasError?: boolean) {
 
 function Contato() {
   const [errors, setErrors] = useState<Partial<Record<Field, string>>>({});
-  const [sent, setSent] = useState(false);
-  const [submitting, setSubmitting] = useState(false);
+  const [submitStatus, setSubmitStatus] = useState<SubmitStatus>("idle");
+  const [preparedWhatsappUrl, setPreparedWhatsappUrl] = useState("");
 
   function validateField(name: Field, value: string) {
     const single = schema.shape[name];
@@ -117,6 +133,7 @@ function Contato() {
     const parsed = schema.safeParse(data);
 
     if (!parsed.success) {
+      setSubmitStatus("idle");
       const next: Partial<Record<Field, string>> = {};
       for (const issue of parsed.error.issues) {
         const key = issue.path[0] as Field;
@@ -130,7 +147,6 @@ function Contato() {
     }
 
     setErrors({});
-    setSubmitting(true);
     const v = parsed.data;
     const text = [
       "Olá! Vim pelo site da JoIA.",
@@ -144,11 +160,18 @@ function Contato() {
       .filter(Boolean)
       .join("\n");
 
-    window.setTimeout(() => {
-      setSubmitting(false);
-      setSent(true);
-      window.open(whatsappLink(text), "_blank", "noopener,noreferrer");
-    }, 450);
+    const url = whatsappLink(text);
+    setPreparedWhatsappUrl(url);
+
+    const popup = window.open("about:blank", "joia-whatsapp");
+    if (!popup) {
+      setSubmitStatus("blocked");
+      return;
+    }
+
+    popup.opener = null;
+    popup.location.replace(url);
+    setSubmitStatus("opened");
   }
 
   const errorCount = Object.keys(errors).length;
@@ -161,12 +184,11 @@ function Contato() {
           <Reveal>
             <Eyebrow>// Contato</Eyebrow>
             <h1 className="h-display mt-6 max-w-[16ch] text-on-dark">
-              Conte o que está travando o seu{" "}
-              <span className="editorial text-gold">negócio.</span>
+              Conte o que está travando o seu <span className="editorial text-gold">negócio.</span>
             </h1>
             <p className="text-lead measure mt-8 text-on-dark-soft">
-              Você não precisa chegar com a solução pronta. Basta descrever o cenário — nós
-              ajudamos a transformar o problema em um caminho possível.
+              Você não precisa chegar com a solução pronta. Basta descrever o cenário — nós ajudamos
+              a transformar o problema em um caminho possível.
             </p>
           </Reveal>
         </div>
@@ -181,17 +203,14 @@ function Contato() {
               className="rounded-xl border border-line-light bg-white p-6 sm:p-10"
             >
               <p className="text-sm text-ink-soft">
-                Preencha em menos de um minuto. Ao enviar, abrimos o WhatsApp com o resumo
-                da sua mensagem já escrito — você só confirma o envio.
+                Preencha em menos de um minuto. Ao enviar, abrimos o WhatsApp com o resumo da sua
+                mensagem já escrito — você só confirma o envio.
               </p>
 
               <div className="mt-8 grid gap-6 sm:grid-cols-2">
                 {FIELDS.map((f) => (
                   <div key={f.name}>
-                    <label
-                      htmlFor={f.name}
-                      className="label-mono block text-ink-soft/70"
-                    >
+                    <label htmlFor={f.name} className="label-mono block text-ink-soft/70">
                       {f.label}
                       {f.optional ? " (opcional)" : ""}
                     </label>
@@ -282,15 +301,10 @@ function Contato() {
               <div className="mt-8 flex flex-wrap items-center gap-4">
                 <button
                   type="submit"
-                  disabled={submitting}
-                  className="focus-gold inline-flex min-h-12 items-center gap-2 rounded-full bg-gold px-7 text-sm font-semibold text-night transition-transform hover:-translate-y-0.5 disabled:cursor-wait disabled:opacity-70"
+                  className="focus-gold inline-flex min-h-12 items-center gap-2 rounded-full bg-gold px-7 text-sm font-semibold text-night transition-transform hover:-translate-y-0.5"
                 >
-                  {submitting ? (
-                    <Loader2 size={16} className="animate-spin" />
-                  ) : (
-                    <Send size={16} />
-                  )}
-                  {submitting ? "Preparando mensagem…" : "Enviar pelo WhatsApp"}
+                  <Send size={16} />
+                  Preparar mensagem no WhatsApp
                 </button>
                 {errorCount > 0 && (
                   <p className="text-xs text-destructive" role="alert">
@@ -302,21 +316,51 @@ function Contato() {
               </div>
 
               <p aria-live="polite" className="sr-only">
-                {sent ? "Mensagem preparada e WhatsApp aberto." : ""}
+                {submitStatus === "opened"
+                  ? "Mensagem preparada e WhatsApp aberto."
+                  : submitStatus === "blocked"
+                    ? "O navegador bloqueou a nova janela. Use o link exibido para abrir o WhatsApp."
+                    : ""}
               </p>
 
-              {sent && (
-                <div className="mt-5 flex items-start gap-3 rounded-lg border border-gold/40 bg-gold/5 p-4 text-sm text-ink-soft">
-                  <Check size={18} className="mt-0.5 shrink-0 text-gold" />
-                  <span>
-                    Abrimos o WhatsApp com o resumo da sua mensagem. Se a janela não abrir,
-                    use os canais diretos ao lado.
+              {submitStatus !== "idle" && (
+                <div
+                  className={[
+                    "mt-5 flex flex-col gap-4 rounded-lg border p-4 text-sm sm:flex-row sm:items-center sm:justify-between",
+                    submitStatus === "opened"
+                      ? "border-gold/40 bg-gold/5 text-ink-soft"
+                      : "border-deep/20 bg-deep/5 text-ink",
+                  ].join(" ")}
+                  role={submitStatus === "blocked" ? "alert" : "status"}
+                >
+                  <span className="flex items-start gap-3">
+                    {submitStatus === "opened" ? (
+                      <Check size={18} className="mt-0.5 shrink-0 text-gold" />
+                    ) : (
+                      <MessageCircle size={18} className="mt-0.5 shrink-0 text-deep" />
+                    )}
+                    <span>
+                      {submitStatus === "opened"
+                        ? "O WhatsApp foi aberto com o resumo da sua mensagem. Revise e confirme o envio por lá."
+                        : "O navegador bloqueou a nova janela. Sua mensagem está preservada; abra o WhatsApp pelo botão ao lado."}
+                    </span>
                   </span>
+
+                  {submitStatus === "blocked" && preparedWhatsappUrl ? (
+                    <a
+                      href={preparedWhatsappUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="focus-gold inline-flex min-h-11 shrink-0 items-center justify-center gap-2 rounded-full bg-deep px-5 text-xs font-semibold text-white transition-colors hover:bg-deep-2"
+                    >
+                      <MessageCircle size={15} />
+                      Abrir WhatsApp agora
+                    </a>
+                  ) : null}
                 </div>
               )}
             </form>
           </Reveal>
-
 
           <Reveal delay={0.1} className="space-y-6">
             <div className="rounded-xl border border-line-light bg-white p-8">

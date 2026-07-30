@@ -121,10 +121,7 @@ function Hero() {
             className="mt-10 flex flex-wrap items-center gap-x-5 gap-y-2 border-t border-line-dark pt-5"
           >
             {TAGS.map((t) => (
-              <li
-                key={t}
-                className="label-mono text-[0.6rem] tracking-[0.2em] text-on-dark-soft/55"
-              >
+              <li key={t} className="label-mono text-xs tracking-[0.16em] text-on-dark-soft/75">
                 {t}
               </li>
             ))}

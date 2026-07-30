@@ -1,4 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
+import { useEffect, useRef, useState } from "react";
 import { ArrowRight, Check, MessageCircle } from "lucide-react";
 import {
   Accordion,
@@ -79,6 +80,142 @@ const CRITERIA = [
   },
 ];
 
+function PillarSubnav() {
+  const [activeId, setActiveId] = useState(PILLARS[0].id);
+  const [canScrollBack, setCanScrollBack] = useState(false);
+  const [canScrollForward, setCanScrollForward] = useState(true);
+  const scrollerRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const sections = PILLARS.map((pillar) => document.getElementById(pillar.id)).filter(
+      (section): section is HTMLElement => Boolean(section),
+    );
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        const closest = entries
+          .filter((entry) => entry.isIntersecting)
+          .sort(
+            (a, b) =>
+              Math.abs(a.boundingClientRect.top - 150) - Math.abs(b.boundingClientRect.top - 150),
+          )[0];
+
+        if (closest?.target.id) setActiveId(closest.target.id as (typeof PILLARS)[number]["id"]);
+      },
+      { rootMargin: "-20% 0px -55% 0px", threshold: 0 },
+    );
+
+    sections.forEach((section) => observer.observe(section));
+    return () => observer.disconnect();
+  }, []);
+
+  useEffect(() => {
+    const scroller = scrollerRef.current;
+    const activeLink = scrollerRef.current?.querySelector<HTMLAnchorElement>(
+      `[data-pillar-id="${activeId}"]`,
+    );
+    if (!scroller || !activeLink) return;
+
+    scroller.scrollTo({
+      left: activeLink.offsetLeft - (scroller.clientWidth - activeLink.offsetWidth) / 2,
+      behavior: "smooth",
+    });
+  }, [activeId]);
+
+  function updateScrollHints() {
+    const scroller = scrollerRef.current;
+    if (!scroller) return;
+    setCanScrollBack(scroller.scrollLeft > 8);
+    setCanScrollForward(scroller.scrollLeft + scroller.clientWidth < scroller.scrollWidth - 8);
+  }
+
+  useEffect(() => {
+    updateScrollHints();
+    window.addEventListener("resize", updateScrollHints);
+    return () => window.removeEventListener("resize", updateScrollHints);
+  }, []);
+
+  const activeIndex = PILLARS.findIndex((pillar) => pillar.id === activeId);
+
+  return (
+    <nav
+      aria-label="Atalhos para os pilares"
+      className="surface-soft seam-top sticky top-16 z-30 border-b border-line-light/70 bg-soft/90 backdrop-blur-md"
+    >
+      <div className="shell">
+        <div className="flex items-center justify-between gap-4 pt-2 sm:hidden">
+          <p className="font-mono text-[0.7rem] uppercase tracking-[0.15em] text-ink-soft">
+            Pilar {String(activeIndex + 1).padStart(2, "0")} de{" "}
+            {String(PILLARS.length).padStart(2, "0")}
+          </p>
+          <p className="flex items-center gap-1.5 text-xs font-medium text-ink-soft">
+            Deslize para ver todos <ArrowRight size={14} aria-hidden="true" />
+          </p>
+        </div>
+
+        <div className="relative">
+          <div
+            ref={scrollerRef}
+            onScroll={updateScrollHints}
+            className="flex snap-x snap-mandatory gap-2 overflow-x-auto py-3 pr-10 [scrollbar-width:none] sm:pr-0 [&::-webkit-scrollbar]:hidden"
+          >
+            {PILLARS.map((pillar, i) => {
+              const active = pillar.id === activeId;
+              return (
+                <a
+                  key={pillar.id}
+                  href={`#${pillar.id}`}
+                  data-pillar-id={pillar.id}
+                  aria-current={active ? "location" : undefined}
+                  onClick={(event) => {
+                    event.preventDefault();
+                    setActiveId(pillar.id);
+                    document.getElementById(pillar.id)?.scrollIntoView({
+                      behavior: "smooth",
+                      block: "start",
+                    });
+                    window.history.replaceState(null, "", `#${pillar.id}`);
+                  }}
+                  className={[
+                    "focus-gold inline-flex min-h-11 shrink-0 snap-center items-center gap-2 rounded-full border px-4 text-xs font-medium transition-all duration-300",
+                    active
+                      ? "border-deep bg-deep text-white shadow-[0_8px_24px_rgba(12,27,58,0.16)]"
+                      : "border-line-light bg-white text-ink-soft hover:border-gold/60 hover:text-ink",
+                  ].join(" ")}
+                >
+                  <span
+                    className={
+                      active ? "font-mono text-xs text-gold-light" : "font-mono text-xs text-gold"
+                    }
+                  >
+                    {String(i + 1).padStart(2, "0")}
+                  </span>
+                  {pillar.title}
+                </a>
+              );
+            })}
+          </div>
+
+          <div
+            aria-hidden="true"
+            className={[
+              "pointer-events-none absolute inset-y-0 left-0 w-7 bg-gradient-to-r from-soft to-transparent transition-opacity sm:hidden",
+              canScrollBack ? "opacity-100" : "opacity-0",
+            ].join(" ")}
+          />
+          <div
+            aria-hidden="true"
+            className={[
+              "pointer-events-none absolute inset-y-0 right-0 w-12 bg-gradient-to-l from-soft via-soft/90 to-transparent transition-opacity sm:hidden",
+              canScrollForward ? "opacity-100" : "opacity-0",
+            ].join(" ")}
+          />
+        </div>
+      </div>
+    </nav>
+  );
+}
+
 function Solucoes() {
   return (
     <>
@@ -92,42 +229,26 @@ function Solucoes() {
               <span className="editorial text-gold">problema.</span>
             </h1>
             <p className="text-lead mt-8 max-w-2xl text-on-dark-soft">
-              Cada empresa perde valor de um jeito diferente. Por isso, nossa atuação começa
-              com entendimento e termina em soluções que a operação consegue sustentar —
-              processos, dados, sistemas, automações ou visibilidade técnica.
+              Cada empresa perde valor de um jeito diferente. Por isso, nossa atuação começa com
+              entendimento e termina em soluções que a operação consegue sustentar — processos,
+              dados, sistemas, automações ou visibilidade técnica.
             </p>
           </Reveal>
         </div>
       </section>
 
-      <nav
-        aria-label="Atalhos para os pilares"
-        className="surface-soft seam-top sticky top-16 z-30 border-b border-line-light/70 bg-soft/90 backdrop-blur-md"
-      >
-        <div className="shell flex snap-x snap-mandatory gap-2 overflow-x-auto py-3 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
-          {PILLARS.map((pillar, i) => (
-            <a
-              key={pillar.id}
-              href={`#${pillar.id}`}
-              className="focus-gold inline-flex min-h-11 shrink-0 snap-start items-center gap-2 rounded-full border border-line-light bg-white px-4 text-xs font-medium text-ink-soft transition-colors hover:border-gold/60 hover:text-ink"
-            >
-              <span className="font-mono text-[0.65rem] text-gold">
-                {String(i + 1).padStart(2, "0")}
-              </span>
-              {pillar.title}
-            </a>
-          ))}
-        </div>
-      </nav>
+      <PillarSubnav />
 
       <section className="surface-soft section-pad">
         <div className="shell space-y-20">
-
           {PILLARS.map((pillar, i) => {
             const Icon = PILLAR_ICONS[pillar.icon as keyof typeof PILLAR_ICONS];
             return (
               <Reveal key={pillar.id} as="section">
-                <div id={pillar.id} className="scroll-mt-44 grid gap-10 lg:grid-cols-[0.85fr_1.15fr]">
+                <div
+                  id={pillar.id}
+                  className="scroll-mt-44 grid gap-10 lg:grid-cols-[0.85fr_1.15fr]"
+                >
                   <div>
                     <span className="label-mono text-ink-soft/70">
                       Pilar {String(i + 1).padStart(2, "0")}
@@ -204,8 +325,7 @@ function Solucoes() {
           <Reveal>
             <Eyebrow>// Entregáveis</Eyebrow>
             <h2 className="h-section mt-5 text-on-dark">
-              O que costuma sair de um projeto{" "}
-              <span className="editorial text-gold">JoIA.</span>
+              O que costuma sair de um projeto <span className="editorial text-gold">JoIA.</span>
             </h2>
             <Stagger className="mt-8 flex flex-wrap gap-2" gap={0.04}>
               {DELIVERABLES.map((d) => (

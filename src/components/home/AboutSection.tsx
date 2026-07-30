@@ -46,49 +46,62 @@ export function Monogram({
           {initials}
         </span>
       )}
-      <span aria-hidden className="pointer-events-none absolute inset-0 rounded-lg ring-1 ring-inset ring-gold/20" />
+      <span
+        aria-hidden
+        className="pointer-events-none absolute inset-0 rounded-lg ring-1 ring-inset ring-gold/20"
+      />
     </span>
   );
 }
 
 export function AboutSection() {
   return (
-    <section id="sobre-joia" className="surface-deep section-pad relative overflow-hidden scroll-mt-24">
+    <section
+      id="sobre-joia"
+      className="surface-deep section-pad defer-render relative overflow-hidden scroll-mt-24"
+    >
       <div className="grid-tech pointer-events-none absolute inset-0 opacity-30" />
-      <div className="shell relative grid gap-14 lg:grid-cols-[0.95fr_1.05fr]">
+      <div className="shell relative grid gap-10 lg:grid-cols-[0.95fr_1.05fr] lg:gap-14">
         <Reveal>
           <Eyebrow>// Sobre a JoIA</Eyebrow>
           <h2 className="h-section mt-5 text-on-dark">
-            Negócio e tecnologia na{" "}
-            <span className="editorial text-gold">mesma conversa.</span>
+            Negócio e tecnologia na <span className="editorial text-gold">mesma conversa.</span>
           </h2>
-          <p className="text-lead mt-7 max-w-lg text-on-dark-soft">
-            A JoIA nasceu para transformar problemas operacionais em soluções que funcionam
-            na prática. Unimos visão de negócio, processos, dados e capacidade técnica para
-            construir soluções adequadas à realidade de cada empresa.
+          <p className="mt-6 max-w-lg text-base leading-relaxed text-on-dark-soft sm:text-lg sm:leading-relaxed">
+            A JoIA nasceu para transformar problemas operacionais em soluções que funcionam na
+            prática. Unimos visão de negócio, processos, dados e capacidade técnica para construir
+            soluções adequadas à realidade de cada empresa.
           </p>
-          <ActionLink to="/sobre" variant="outline-light" className="mt-9">
+          <ActionLink to="/sobre" variant="outline-light" className="mt-7 sm:mt-9">
             Conhecer a JoIA <ArrowRight size={16} />
           </ActionLink>
         </Reveal>
 
-        <Stagger className="grid gap-5">
-          {FOUNDERS.map((f) => (
-            <StaggerItem
-              key={f.name}
-              className="flex gap-6 rounded-xl border border-line-dark bg-night/50 p-7"
-            >
-              <Monogram initials={f.initials} photo={f.photo} name={f.name} />
-              <div>
-                <h3 className="h-card text-on-dark">{f.name}</h3>
-                <p className="mt-2 text-sm font-medium text-gold">{f.specialty}</p>
-                <p className="mt-3 text-[0.95rem] leading-relaxed text-on-dark-soft">
-                  {f.description}
-                </p>
-              </div>
-            </StaggerItem>
-          ))}
-        </Stagger>
+        <div>
+          <p className="label-mono mb-5 flex items-center gap-2 text-on-dark-soft lg:hidden">
+            Conheça os fundadores <ArrowRight size={15} aria-hidden="true" />
+          </p>
+          <Stagger
+            ariaLabel="Fundadores da JoIA"
+            className="-mx-5 flex snap-x snap-mandatory gap-4 overflow-x-auto px-5 pb-4 [scrollbar-width:none] sm:-mx-8 sm:px-8 lg:mx-0 lg:grid lg:gap-5 lg:overflow-visible lg:px-0 lg:pb-0 [&::-webkit-scrollbar]:hidden"
+          >
+            {FOUNDERS.map((f) => (
+              <StaggerItem
+                key={f.name}
+                className="flex min-w-0 flex-[0_0_88%] snap-center gap-4 rounded-xl border border-line-dark bg-night/50 p-5 sm:flex-[0_0_72%] sm:gap-6 sm:p-7 lg:flex-auto"
+              >
+                <Monogram initials={f.initials} photo={f.photo} name={f.name} />
+                <div>
+                  <h3 className="h-card text-on-dark">{f.name}</h3>
+                  <p className="mt-2 text-sm font-medium text-gold">{f.specialty}</p>
+                  <p className="mt-3 text-[0.95rem] leading-relaxed text-on-dark-soft">
+                    {f.description}
+                  </p>
+                </div>
+              </StaggerItem>
+            ))}
+          </Stagger>
+        </div>
       </div>
     </section>
   );

@@ -49,20 +49,29 @@ export function Stagger({
   className,
   gap = 0.06,
   as = "div",
+  ariaLabel,
 }: {
   children: ReactNode;
   className?: string;
   gap?: number;
   as?: "div" | "ul" | "section";
+  ariaLabel?: string;
 }) {
   const reduce = useReducedMotion();
   const Comp = motion[as];
 
-  if (reduce) return <Comp className={className}>{children}</Comp>;
+  if (reduce)
+    return (
+      <Comp className={className} role={ariaLabel ? "region" : undefined} aria-label={ariaLabel}>
+        {children}
+      </Comp>
+    );
 
   return (
     <Comp
       className={className}
+      role={ariaLabel ? "region" : undefined}
+      aria-label={ariaLabel}
       initial="hidden"
       whileInView="visible"
       viewport={{ once: true, margin: "-50px" }}

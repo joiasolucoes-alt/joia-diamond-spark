@@ -6,7 +6,7 @@ import { whatsappLink } from "@/lib/site";
 
 export function FinalCTA() {
   return (
-    <section className="surface-night section-pad relative overflow-hidden">
+    <section className="surface-night section-pad defer-render relative overflow-hidden">
       <div className="grid-tech pointer-events-none absolute inset-0 opacity-50" />
       <div
         aria-hidden
@@ -19,8 +19,8 @@ export function FinalCTA() {
             <span className="editorial text-gold">invisível na sua operação?</span>
           </h2>
           <p className="text-lead mt-6 max-w-xl text-on-dark-soft">
-            Conte o que está travando o seu negócio. A JoIA ajuda a transformar o problema
-            em um caminho possível.
+            Conte o que está travando o seu negócio. A JoIA ajuda a transformar o problema em um
+            caminho possível.
           </p>
           <div className="mt-10 flex flex-wrap gap-3">
             <ActionLink to="/contato" variant="gold">

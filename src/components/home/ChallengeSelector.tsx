@@ -310,7 +310,7 @@ function ChallengePanelContent({ challenge }: { challenge: Challenge }) {
           <Link
             to="/cases"
             hash={challenge.proof.slug}
-            className="focus-gold inline-flex shrink-0 items-center gap-2 rounded-sm text-sm font-semibold text-gold transition-colors hover:text-gold-light"
+            className="focus-gold inline-flex min-h-11 shrink-0 items-center gap-2 rounded-sm text-sm font-semibold text-gold transition-colors hover:text-gold-light"
           >
             Ver projeto <ArrowRight size={14} aria-hidden="true" />
           </Link>
@@ -414,7 +414,7 @@ function DesktopChallengeSelector({
                   <span className="min-w-0 flex-1">
                     <span
                       className={[
-                        "font-mono text-[0.62rem] tracking-[0.16em]",
+                        "font-mono text-xs tracking-[0.14em]",
                         isActive ? "text-gold" : "text-on-dark-soft/70",
                       ].join(" ")}
                     >
@@ -516,7 +516,7 @@ function MobileChallengeAccordion({
               <span className="min-w-0 flex-1">
                 <span
                   className={[
-                    "font-mono text-[0.62rem] tracking-[0.16em]",
+                    "font-mono text-xs tracking-[0.14em]",
                     isActive ? "text-gold" : "text-on-dark-soft/70",
                   ].join(" ")}
                 >

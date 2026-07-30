@@ -12,4 +12,32 @@ export default defineConfig({
     // nitro/vite builds from this
     server: { entry: "server" },
   },
+  vite: {
+    build: {
+      rolldownOptions: {
+        output: {
+          codeSplitting: {
+            groups: [
+              {
+                name: "vendor-react",
+                test: /\/node_modules\/(?:react|react-dom|scheduler)\//,
+              },
+              {
+                name: "vendor-motion",
+                test: /\/node_modules\/(?:framer-motion|motion-dom|motion-utils)\//,
+              },
+              {
+                name: "vendor-tanstack",
+                test: /\/node_modules\/@tanstack\//,
+              },
+              {
+                name: "vendor-validation",
+                test: /\/node_modules\/zod\//,
+              },
+            ],
+          },
+        },
+      },
+    },
+  },
 });

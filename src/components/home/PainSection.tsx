@@ -79,6 +79,8 @@ export function PainSection() {
   );
 
   useMotionValueEvent(scrollYProgress, "change", (progress) => {
+    if (reduce || !window.matchMedia("(min-width: 80rem)").matches) return;
+
     const nextIndex = Math.min(PAINS.length - 1, Math.floor(progress * PAINS.length));
     setActiveIndex((current) => {
       if (current !== nextIndex) emblaApi?.scrollTo(nextIndex, Boolean(reduce));
@@ -105,14 +107,14 @@ export function PainSection() {
       className={
         reduce
           ? "surface-soft relative scroll-mt-24"
-          : "surface-soft relative h-[600svh] scroll-mt-24"
+          : "surface-soft relative scroll-mt-24 xl:h-[600svh]"
       }
       aria-labelledby="pain-section-title"
     >
       <div
         className={[
           "flex min-h-[100svh] items-center overflow-hidden py-20 sm:py-24",
-          reduce ? "relative" : "sticky top-0",
+          reduce ? "relative" : "relative xl:sticky xl:top-0",
         ].join(" ")}
       >
         <div
@@ -156,8 +158,11 @@ export function PainSection() {
                 </span>
                 <div>
                   <p className="text-lead text-ink-soft">{activePain.text}</p>
-                  <p className="mt-4 font-mono text-[0.62rem] tracking-[0.16em] text-ink-soft/65 uppercase">
-                    Role para avançar · deslize para explorar
+                  <p className="mt-4 font-mono text-xs tracking-[0.14em] text-ink-soft/80 uppercase">
+                    <span className="xl:hidden">Deslize o card para explorar</span>
+                    <span className="hidden xl:inline">
+                      Role para avançar · deslize para explorar
+                    </span>
                   </p>
                 </div>
               </motion.div>
@@ -226,9 +231,9 @@ export function PainSection() {
               </div>
             </div>
 
-            <div className="mt-6 flex items-center justify-between gap-6">
+            <div className="mt-6 grid grid-cols-[1fr_auto] items-center gap-x-4 sm:flex sm:gap-6">
               <div
-                className="h-px flex-1 overflow-hidden bg-line-light"
+                className="col-start-1 row-start-1 h-px flex-1 overflow-hidden bg-line-light"
                 role="progressbar"
                 aria-label="Progresso dos problemas operacionais"
                 aria-valuemin={1}
@@ -242,7 +247,7 @@ export function PainSection() {
                 />
               </div>
 
-              <div className="flex items-center gap-2">
+              <div className="col-span-2 row-start-2 mt-2 flex items-center justify-center sm:mt-0">
                 {PAINS.map((pain, index) => (
                   <button
                     key={pain.title}
@@ -250,15 +255,22 @@ export function PainSection() {
                     onClick={() => selectPain(index)}
                     aria-label={`Mostrar ${pain.title}`}
                     aria-current={index === activeIndex ? "step" : undefined}
-                    className={[
-                      "focus-gold h-2 rounded-full transition-all duration-300",
-                      index === activeIndex ? "w-8 bg-gold" : "w-2 bg-line-light hover:bg-gold/50",
-                    ].join(" ")}
-                  />
+                    className="focus-gold group flex h-11 w-11 items-center justify-center rounded-full"
+                  >
+                    <span
+                      aria-hidden="true"
+                      className={[
+                        "h-2 rounded-full transition-all duration-300",
+                        index === activeIndex
+                          ? "w-8 bg-gold"
+                          : "w-2 bg-line-light group-hover:bg-gold/50",
+                      ].join(" ")}
+                    />
+                  </button>
                 ))}
               </div>
 
-              <span className="min-w-16 text-right font-mono text-xs tracking-[0.14em] text-ink-soft">
+              <span className="col-start-2 row-start-1 min-w-16 text-right font-mono text-xs tracking-[0.14em] text-ink-soft">
                 {String(activeIndex + 1).padStart(2, "0")} / {String(PAINS.length).padStart(2, "0")}
               </span>
             </div>

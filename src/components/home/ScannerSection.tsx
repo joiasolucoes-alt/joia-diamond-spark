@@ -66,9 +66,11 @@ export function ScannerSection() {
     });
   }
 
-
   return (
-    <section id="scanner" className="surface-deep section-pad relative overflow-hidden scroll-mt-24">
+    <section
+      id="scanner"
+      className="surface-deep section-pad defer-render relative overflow-hidden scroll-mt-24"
+    >
       <div className="shell relative grid gap-12 lg:grid-cols-[0.85fr_1.15fr] lg:items-start">
         <Reveal>
           <Eyebrow>// Ferramenta</Eyebrow>
@@ -76,12 +78,12 @@ export function ScannerSection() {
             Scanner JoIA de <span className="editorial text-gold">Oportunidades</span>
           </h2>
           <p className="text-lead mt-6 max-w-md text-on-dark-soft">
-            Responda seis perguntas rápidas e identifique onde sua operação pode estar
-            deixando valor sobre a mesa.
+            Responda seis perguntas rápidas e identifique onde sua operação pode estar deixando
+            valor sobre a mesa.
           </p>
           <p className="mt-8 font-mono text-xs leading-relaxed tracking-wide text-on-dark-soft/80">
-            Este scanner é um ponto de partida para a conversa. Ele não substitui um
-            diagnóstico realizado com a sua equipe.
+            Este scanner é um ponto de partida para a conversa. Ele não substitui um diagnóstico
+            realizado com a sua equipe.
           </p>
         </Reveal>
 
@@ -140,41 +142,47 @@ export function ScannerSection() {
                       );
                     })}
                   </div>
-
                 </fieldset>
               </li>
             ))}
           </ol>
 
-          <div className="sticky bottom-0 -mx-6 mt-9 flex flex-wrap items-center gap-x-3 gap-y-2 border-t border-line-dark bg-deep/95 px-6 py-4 backdrop-blur-sm sm:static sm:mx-0 sm:border-0 sm:bg-transparent sm:px-0 sm:py-0 sm:backdrop-blur-none">
-            <button
-              type="button"
-              disabled={!complete}
-              onClick={showResult}
-              className="focus-gold inline-flex min-h-12 flex-1 items-center justify-center rounded-full bg-gold px-6 py-3 text-sm font-semibold text-night transition-all duration-300 hover:bg-gold-light disabled:cursor-not-allowed disabled:opacity-35 sm:flex-none"
-            >
-              Ver meu resultado
-            </button>
+          <AnimatePresence initial={false}>
             {answered > 0 && (
-              <button
-                type="button"
-                onClick={() => {
-                  setAnswers({});
-                  setSubmitted(false);
-                }}
-                className="focus-gold inline-flex min-h-12 items-center gap-2 rounded-full px-4 text-sm text-on-dark-soft hover:text-on-dark"
+              <motion.div
+                initial={{ opacity: 0, y: 8 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: 8 }}
+                className="scanner-actions -mx-6 mt-8 flex flex-wrap items-center gap-x-2 gap-y-2 border-t border-line-dark bg-deep/95 px-6 py-3 backdrop-blur-sm sm:static sm:mx-0 sm:border-0 sm:bg-transparent sm:px-0 sm:py-0 sm:backdrop-blur-none"
               >
-                <RotateCcw size={15} /> Recomeçar
-              </button>
+                <button
+                  type="button"
+                  disabled={!complete}
+                  onClick={showResult}
+                  className="focus-gold inline-flex min-h-11 flex-1 items-center justify-center rounded-full bg-gold px-5 py-2.5 text-sm font-semibold text-night transition-all duration-300 hover:bg-gold-light disabled:cursor-not-allowed disabled:opacity-35 sm:min-h-12 sm:flex-none sm:px-6 sm:py-3"
+                >
+                  Ver meu resultado
+                </button>
+                <button
+                  type="button"
+                  onClick={() => {
+                    setAnswers({});
+                    setSubmitted(false);
+                  }}
+                  className="focus-gold inline-flex min-h-11 items-center gap-2 rounded-full px-3 text-sm text-on-dark-soft hover:text-on-dark sm:min-h-12 sm:px-4"
+                >
+                  <RotateCcw size={15} /> Recomeçar
+                </button>
+                {!complete && (
+                  <p aria-live="polite" className="w-full text-xs text-on-dark-soft sm:w-auto">
+                    {remaining === 1
+                      ? "Falta 1 pergunta para ver o resultado."
+                      : `Faltam ${remaining} perguntas para ver o resultado.`}
+                  </p>
+                )}
+              </motion.div>
             )}
-            {!complete && (
-              <p aria-live="polite" className="w-full text-xs text-on-dark-soft sm:w-auto">
-                {remaining === 1
-                  ? "Falta 1 pergunta para ver o resultado."
-                  : `Faltam ${remaining} perguntas para ver o resultado.`}
-              </p>
-            )}
-          </div>
+          </AnimatePresence>
 
           <AnimatePresence>
             {submitted && complete && (
@@ -213,12 +221,7 @@ export function ScannerSection() {
                   Indicativo, não é um diagnóstico definitivo.
                 </p>
 
-                <ActionLink
-                  href={whatsappLink(waMessage)}
-                  external
-                  variant="gold"
-                  className="mt-7"
-                >
+                <ActionLink href={whatsappLink(waMessage)} external variant="gold" className="mt-7">
                   <MessageCircle size={17} />
                   Conversar sobre este resultado
                 </ActionLink>

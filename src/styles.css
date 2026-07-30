@@ -2,6 +2,14 @@
 @source "../src";
 @import "tw-animate-css";
 
+@media (max-width: 639px) and (min-height: 700px) {
+  .scanner-actions {
+    position: sticky;
+    bottom: 0;
+    z-index: 10;
+  }
+}
+
 /*
  * JoIA Soluções Empresariais — design system
  * Brand palette (official): night #030713, deep #0C1B3A,
@@ -43,6 +51,7 @@
   --color-deep-2: var(--deep-2);
   --color-gold: var(--gold);
   --color-gold-light: var(--gold-light);
+  --color-gold-ink: var(--gold-ink);
   --color-soft: var(--soft);
   --color-ink: var(--night);
   --color-ink-soft: var(--ink-soft);
@@ -64,6 +73,7 @@
   --deep-2: oklch(0.2907 0.0786 260.63);
   --gold: oklch(0.7274 0.1176 89.55);
   --gold-light: oklch(0.8567 0.1208 94.67);
+  --gold-ink: oklch(0.5 0.105 85);
   --soft: oklch(0.9698 0.0054 95.1);
   --ink-soft: oklch(0.4991 0.022 265.82);
   --on-dark: oklch(0.98 0.002 95);
@@ -150,7 +160,7 @@
 
 @utility label-mono {
   font-family: var(--font-mono);
-  font-size: clamp(0.6875rem, 0.66rem + 0.1vw, 0.8125rem);
+  font-size: clamp(0.75rem, 0.72rem + 0.08vw, 0.8125rem);
   letter-spacing: 0.18em;
   text-transform: uppercase;
 }
@@ -176,6 +186,10 @@
 @utility surface-soft {
   background-color: var(--soft);
   color: var(--night);
+
+  & .text-gold {
+    color: var(--gold-ink);
+  }
 }
 
 @utility shell {
@@ -186,7 +200,7 @@
 }
 
 @utility section-pad {
-  padding-block: clamp(4.5rem, 9vw, 8.5rem);
+  padding-block: clamp(3.75rem, 9vw, 8.5rem);
 }
 
 @utility facet-top {
@@ -228,8 +242,9 @@
 
 @utility focus-gold {
   &:focus-visible {
-    outline: 2px solid var(--gold);
+    outline: 2px solid var(--night);
     outline-offset: 3px;
+    box-shadow: 0 0 0 5px var(--gold-light);
   }
 }
 
@@ -254,6 +269,12 @@
 
 @utility measure-tight {
   max-width: 52ch;
+}
+
+/* Keep below-the-fold sections measurable while postponing their paint work. */
+@utility defer-render {
+  content-visibility: auto;
+  contain-intrinsic-size: auto 56rem;
 }
 
 /* Soft seam between stacked surfaces */
