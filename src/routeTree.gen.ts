@@ -11,6 +11,7 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as CasesRouteImport } from './routes/cases'
+import { Route as ContatoRouteImport } from './routes/contato'
 import { Route as SobreRouteImport } from './routes/sobre'
 import { Route as SolucoesRouteImport } from './routes/solucoes'
 
@@ -22,6 +23,11 @@ const IndexRoute = IndexRouteImport.update({
 const CasesRoute = CasesRouteImport.update({
   id: '/cases',
   path: '/cases',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ContatoRoute = ContatoRouteImport.update({
+  id: '/contato',
+  path: '/contato',
   getParentRoute: () => rootRouteImport,
 } as any)
 const SobreRoute = SobreRouteImport.update({
@@ -38,12 +44,14 @@ const SolucoesRoute = SolucoesRouteImport.update({
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/cases': typeof CasesRoute
+  '/contato': typeof ContatoRoute
   '/sobre': typeof SobreRoute
   '/solucoes': typeof SolucoesRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/cases': typeof CasesRoute
+  '/contato': typeof ContatoRoute
   '/sobre': typeof SobreRoute
   '/solucoes': typeof SolucoesRoute
 }
@@ -51,20 +59,22 @@ export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/cases': typeof CasesRoute
+  '/contato': typeof ContatoRoute
   '/sobre': typeof SobreRoute
   '/solucoes': typeof SolucoesRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/cases' | '/sobre' | '/solucoes'
+  fullPaths: '/' | '/cases' | '/contato' | '/sobre' | '/solucoes'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/cases' | '/sobre' | '/solucoes'
-  id: '__root__' | '/' | '/cases' | '/sobre' | '/solucoes'
+  to: '/' | '/cases' | '/contato' | '/sobre' | '/solucoes'
+  id: '__root__' | '/' | '/cases' | '/contato' | '/sobre' | '/solucoes'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   CasesRoute: typeof CasesRoute
+  ContatoRoute: typeof ContatoRoute
   SobreRoute: typeof SobreRoute
   SolucoesRoute: typeof SolucoesRoute
 }
@@ -83,6 +93,13 @@ declare module '@tanstack/react-router' {
       path: '/cases'
       fullPath: '/cases'
       preLoaderRoute: typeof CasesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/contato': {
+      id: '/contato'
+      path: '/contato'
+      fullPath: '/contato'
+      preLoaderRoute: typeof ContatoRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/sobre': {
@@ -105,6 +122,7 @@ declare module '@tanstack/react-router' {
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   CasesRoute: CasesRoute,
+  ContatoRoute: ContatoRoute,
   SobreRoute: SobreRoute,
   SolucoesRoute: SolucoesRoute,
 }
