@@ -218,8 +218,59 @@
   }
 }
 
+/* ---------- Rhythm ---------- */
+@utility section-pad-sm {
+  padding-block: clamp(3rem, 6vw, 5.25rem);
+}
+
+@utility section-pad-lg {
+  padding-block: clamp(5.5rem, 11vw, 10.5rem);
+}
+
+@utility page-hero-pad {
+  padding-top: clamp(8.5rem, 8rem + 5vw, 11rem);
+  padding-bottom: clamp(3.5rem, 6vw, 6rem);
+}
+
+/* Comfortable measure for long-form paragraphs */
+@utility measure {
+  max-width: 68ch;
+}
+
+@utility measure-tight {
+  max-width: 52ch;
+}
+
+/* Soft seam between stacked surfaces */
+@utility seam-top {
+  position: relative;
+  &::before {
+    content: "";
+    position: absolute;
+    inset-inline: 0;
+    top: 0;
+    height: 1px;
+    background: linear-gradient(
+      90deg,
+      transparent,
+      color-mix(in oklab, var(--gold) 35%, transparent),
+      transparent
+    );
+    pointer-events: none;
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;
   }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
 }
+
