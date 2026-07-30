@@ -109,7 +109,7 @@ export function ScannerSection() {
                     </span>
                     {q.text}
                   </legend>
-                  <div className="mt-3 flex flex-wrap gap-2">
+                  <div className="mt-3 grid grid-cols-3 gap-2">
                     {ANSWERS.map((a) => {
                       const active = answers[q.id] === a.value;
                       return (
@@ -122,18 +122,25 @@ export function ScannerSection() {
                             setSubmitted(false);
                           }}
                           className={[
-                            "focus-gold min-h-11 rounded-full border px-5 text-sm transition-all duration-300",
+                            "focus-gold inline-flex min-h-11 items-center justify-center gap-1.5 rounded-full border px-3 text-center text-[0.8rem] transition-all duration-300 sm:text-sm",
                             active
                               ? "border-gold bg-gold/15 font-semibold text-gold-light"
                               : "border-line-dark text-on-dark-soft hover:border-on-dark-soft hover:text-on-dark",
                           ].join(" ")}
                         >
-                          {active ? "✓ " : ""}
+                          <span
+                            aria-hidden
+                            className={[
+                              "size-1.5 shrink-0 rounded-full transition-colors",
+                              active ? "bg-gold" : "bg-on-dark-soft/30",
+                            ].join(" ")}
+                          />
                           {a.label}
                         </button>
                       );
                     })}
                   </div>
+
                 </fieldset>
               </li>
             ))}
