@@ -4,12 +4,11 @@ import type { ReactNode } from "react";
 const EASE = [0.22, 1, 0.36, 1] as const;
 
 export const revealVariants: Variants = {
-  hidden: { opacity: 0, y: 24, filter: "blur(10px)" },
+  hidden: { opacity: 0, y: 14 },
   visible: {
     opacity: 1,
     y: 0,
-    filter: "blur(0px)",
-    transition: { duration: 0.7, ease: EASE },
+    transition: { duration: 0.5, ease: EASE },
   },
 };
 
@@ -36,7 +35,7 @@ export function Reveal({
       className={className}
       initial="hidden"
       whileInView="visible"
-      viewport={{ once: true, margin: "-80px" }}
+      viewport={{ once: true, margin: "-50px" }}
       variants={revealVariants}
       transition={{ delay }}
     >
@@ -48,7 +47,7 @@ export function Reveal({
 export function Stagger({
   children,
   className,
-  gap = 0.09,
+  gap = 0.06,
   as = "div",
 }: {
   children: ReactNode;
@@ -66,7 +65,7 @@ export function Stagger({
       className={className}
       initial="hidden"
       whileInView="visible"
-      viewport={{ once: true, margin: "-60px" }}
+      viewport={{ once: true, margin: "-50px" }}
       variants={{
         hidden: {},
         visible: { transition: { staggerChildren: gap } },

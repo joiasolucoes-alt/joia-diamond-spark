@@ -1,7 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useState } from "react";
 import { z } from "zod";
-import { Mail, MapPin, MessageCircle, Send } from "lucide-react";
+import { Check, Copy, Loader2, Mail, MapPin, MessageCircle, Send } from "lucide-react";
 import { Reveal } from "@/components/site/motion";
 import { ActionLink, Eyebrow } from "@/components/site/ActionLink";
 import { WHATSAPP_DISPLAY, whatsappLink } from "@/lib/site";
@@ -55,16 +55,65 @@ const FIELDS: { name: Field; label: string; type?: string; optional?: boolean }[
   { name: "phone", label: "Telefone / WhatsApp", optional: true },
 ];
 
+const CONTACT_EMAIL = "contato@joiasolucoes.com.br";
+
+function CopyEmail() {
+  const [copied, setCopied] = useState(false);
+
+  return (
+    <button
+      type="button"
+      onClick={async () => {
+        try {
+          await navigator.clipboard.writeText(CONTACT_EMAIL);
+          setCopied(true);
+          window.setTimeout(() => setCopied(false), 2000);
+        } catch {
+          setCopied(false);
+        }
+      }}
+      className="focus-gold inline-flex min-h-11 items-center gap-1.5 rounded-full border border-line-light px-3 text-xs font-medium text-ink-soft transition-colors hover:border-gold/60 hover:text-ink"
+    >
+      {copied ? <Check size={13} className="text-gold" /> : <Copy size={13} />}
+      {copied ? "Copiado" : "Copiar"}
+    </button>
+  );
+}
+
 const inputClass =
-  "focus-gold w-full rounded-lg border border-line-light bg-white px-4 py-3 text-[0.95rem] text-ink outline-none transition-colors placeholder:text-ink-soft/50 hover:border-gold/50";
+  "focus-gold min-h-12 w-full rounded-lg border bg-white px-4 py-3 text-[0.95rem] text-ink outline-none transition-colors placeholder:text-ink-soft/50";
+
+function fieldClass(hasError?: boolean) {
+  return `${inputClass} ${
+    hasError
+      ? "border-destructive hover:border-destructive"
+      : "border-line-light hover:border-gold/50"
+  }`;
+}
 
 function Contato() {
   const [errors, setErrors] = useState<Partial<Record<Field, string>>>({});
   const [sent, setSent] = useState(false);
+  const [submitting, setSubmitting] = useState(false);
+
+  function validateField(name: Field, value: string) {
+    const single = schema.shape[name];
+    const result = single.safeParse(value);
+    setErrors((prev) => {
+      const next = { ...prev };
+      if (result.success || (value === "" && (name === "company" || name === "phone"))) {
+        delete next[name];
+      } else if (!result.success) {
+        next[name] = result.error.issues[0]?.message ?? "Campo inválido";
+      }
+      return next;
+    });
+  }
 
   function onSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
-    const data = Object.fromEntries(new FormData(e.currentTarget)) as Record<string, string>;
+    const form = e.currentTarget;
+    const data = Object.fromEntries(new FormData(form)) as Record<string, string>;
     const parsed = schema.safeParse(data);
 
     if (!parsed.success) {
@@ -74,10 +123,14 @@ function Contato() {
         if (!next[key]) next[key] = issue.message;
       }
       setErrors(next);
+      const first = form.querySelector<HTMLElement>(`[name="${Object.keys(next)[0]}"]`);
+      first?.focus();
+      first?.scrollIntoView({ block: "center", behavior: "smooth" });
       return;
     }
 
     setErrors({});
+    setSubmitting(true);
     const v = parsed.data;
     const text = [
       "Olá! Vim pelo site da JoIA.",
@@ -91,13 +144,18 @@ function Contato() {
       .filter(Boolean)
       .join("\n");
 
-    setSent(true);
-    window.open(whatsappLink(text), "_blank", "noopener,noreferrer");
+    window.setTimeout(() => {
+      setSubmitting(false);
+      setSent(true);
+      window.open(whatsappLink(text), "_blank", "noopener,noreferrer");
+    }, 450);
   }
+
+  const errorCount = Object.keys(errors).length;
 
   return (
     <>
-      <section className="surface-night relative overflow-hidden pt-40 pb-24">
+      <section className="surface-night relative overflow-hidden page-hero-pad">
         <div className="grid-tech pointer-events-none absolute inset-0 opacity-60" />
         <div className="shell relative">
           <Reveal>
@@ -106,7 +164,7 @@ function Contato() {
               Conte o que está travando o seu{" "}
               <span className="editorial text-gold">negócio.</span>
             </h1>
-            <p className="text-lead mt-8 max-w-2xl text-on-dark-soft">
+            <p className="text-lead measure mt-8 text-on-dark-soft">
               Você não precisa chegar com a solução pronta. Basta descrever o cenário — nós
               ajudamos a transformar o problema em um caminho possível.
             </p>
@@ -120,12 +178,20 @@ function Contato() {
             <form
               onSubmit={onSubmit}
               noValidate
-              className="rounded-xl border border-line-light bg-white p-8 sm:p-10"
+              className="rounded-xl border border-line-light bg-white p-6 sm:p-10"
             >
-              <div className="grid gap-6 sm:grid-cols-2">
+              <p className="text-sm text-ink-soft">
+                Preencha em menos de um minuto. Ao enviar, abrimos o WhatsApp com o resumo
+                da sua mensagem já escrito — você só confirma o envio.
+              </p>
+
+              <div className="mt-8 grid gap-6 sm:grid-cols-2">
                 {FIELDS.map((f) => (
-                  <div key={f.name} className={f.name === "email" ? "" : ""}>
-                    <label htmlFor={f.name} className="label-mono text-ink-soft/70">
+                  <div key={f.name}>
+                    <label
+                      htmlFor={f.name}
+                      className="label-mono block text-ink-soft/70"
+                    >
                       {f.label}
                       {f.optional ? " (opcional)" : ""}
                     </label>
@@ -133,21 +199,43 @@ function Contato() {
                       id={f.name}
                       name={f.name}
                       type={f.type ?? "text"}
-                      className={`${inputClass} mt-2`}
+                      autoComplete={
+                        f.name === "email"
+                          ? "email"
+                          : f.name === "phone"
+                            ? "tel"
+                            : f.name === "name"
+                              ? "name"
+                              : "organization"
+                      }
+                      onBlur={(e) => validateField(f.name, e.currentTarget.value)}
+                      className={`${fieldClass(!!errors[f.name])} mt-2`}
                       aria-invalid={!!errors[f.name]}
+                      aria-describedby={errors[f.name] ? `${f.name}-error` : undefined}
                     />
                     {errors[f.name] && (
-                      <p className="mt-2 text-xs text-destructive">{errors[f.name]}</p>
+                      <p id={`${f.name}-error`} className="mt-2 text-xs text-destructive">
+                        {errors[f.name]}
+                      </p>
                     )}
                   </div>
                 ))}
               </div>
 
               <div className="mt-6">
-                <label htmlFor="challenge" className="label-mono text-ink-soft/70">
+                <label htmlFor="challenge" className="label-mono block text-ink-soft/70">
                   Principal desafio hoje
                 </label>
-                <select id="challenge" name="challenge" defaultValue="" className={`${inputClass} mt-2`}>
+                <select
+                  id="challenge"
+                  name="challenge"
+                  defaultValue=""
+                  onBlur={(e) => validateField("challenge", e.currentTarget.value)}
+                  onChange={(e) => validateField("challenge", e.currentTarget.value)}
+                  aria-invalid={!!errors.challenge}
+                  aria-describedby={errors.challenge ? "challenge-error" : undefined}
+                  className={`${fieldClass(!!errors.challenge)} mt-2`}
+                >
                   <option value="" disabled>
                     Selecione uma opção
                   </option>
@@ -159,12 +247,14 @@ function Contato() {
                   <option value="Outro">Outro</option>
                 </select>
                 {errors.challenge && (
-                  <p className="mt-2 text-xs text-destructive">{errors.challenge}</p>
+                  <p id="challenge-error" className="mt-2 text-xs text-destructive">
+                    {errors.challenge}
+                  </p>
                 )}
               </div>
 
               <div className="mt-6">
-                <label htmlFor="message" className="label-mono text-ink-soft/70">
+                <label htmlFor="message" className="label-mono block text-ink-soft/70">
                   Descreva o cenário
                 </label>
                 <textarea
@@ -172,29 +262,61 @@ function Contato() {
                   name="message"
                   rows={5}
                   maxLength={1000}
+                  onBlur={(e) => validateField("message", e.currentTarget.value)}
                   placeholder="O que acontece hoje, onde trava e o que você gostaria que fosse diferente."
-                  className={`${inputClass} mt-2 resize-y`}
+                  aria-invalid={!!errors.message}
+                  aria-describedby={errors.message ? "message-error" : "message-hint"}
+                  className={`${fieldClass(!!errors.message)} mt-2 resize-y`}
                 />
-                {errors.message && (
-                  <p className="mt-2 text-xs text-destructive">{errors.message}</p>
+                {errors.message ? (
+                  <p id="message-error" className="mt-2 text-xs text-destructive">
+                    {errors.message}
+                  </p>
+                ) : (
+                  <p id="message-hint" className="mt-2 text-xs text-ink-soft/70">
+                    Quanto mais concreto, melhor conseguimos responder.
+                  </p>
                 )}
               </div>
 
-              <button
-                type="submit"
-                className="focus-gold mt-8 inline-flex min-h-12 items-center gap-2 rounded-full bg-gold px-7 text-sm font-semibold text-night transition-transform hover:-translate-y-0.5"
-              >
-                <Send size={16} /> Enviar mensagem
-              </button>
+              <div className="mt-8 flex flex-wrap items-center gap-4">
+                <button
+                  type="submit"
+                  disabled={submitting}
+                  className="focus-gold inline-flex min-h-12 items-center gap-2 rounded-full bg-gold px-7 text-sm font-semibold text-night transition-transform hover:-translate-y-0.5 disabled:cursor-wait disabled:opacity-70"
+                >
+                  {submitting ? (
+                    <Loader2 size={16} className="animate-spin" />
+                  ) : (
+                    <Send size={16} />
+                  )}
+                  {submitting ? "Preparando mensagem…" : "Enviar pelo WhatsApp"}
+                </button>
+                {errorCount > 0 && (
+                  <p className="text-xs text-destructive" role="alert">
+                    {errorCount === 1
+                      ? "1 campo precisa de atenção."
+                      : `${errorCount} campos precisam de atenção.`}
+                  </p>
+                )}
+              </div>
+
+              <p aria-live="polite" className="sr-only">
+                {sent ? "Mensagem preparada e WhatsApp aberto." : ""}
+              </p>
 
               {sent && (
-                <p className="mt-5 rounded-lg border border-gold/40 bg-gold/5 p-4 text-sm text-ink-soft">
-                  Abrimos o WhatsApp com o resumo da sua mensagem. Se a janela não abrir,
-                  use o botão de WhatsApp ao lado.
-                </p>
+                <div className="mt-5 flex items-start gap-3 rounded-lg border border-gold/40 bg-gold/5 p-4 text-sm text-ink-soft">
+                  <Check size={18} className="mt-0.5 shrink-0 text-gold" />
+                  <span>
+                    Abrimos o WhatsApp com o resumo da sua mensagem. Se a janela não abrir,
+                    use os canais diretos ao lado.
+                  </span>
+                </div>
               )}
             </form>
           </Reveal>
+
 
           <Reveal delay={0.1} className="space-y-6">
             <div className="rounded-xl border border-line-light bg-white p-8">
@@ -211,15 +333,19 @@ function Contato() {
                     {WHATSAPP_DISPLAY}
                   </a>
                 </li>
-                <li className="flex items-start gap-3">
+                <li className="flex min-h-11 items-start gap-3">
                   <Mail size={18} className="mt-0.5 shrink-0 text-gold" />
-                  <a
-                    className="focus-gold rounded transition-colors hover:text-ink"
-                    href="mailto:contato@joiasolucoes.com.br"
-                  >
-                    contato@joiasolucoes.com.br
-                  </a>
+                  <span className="flex min-w-0 flex-wrap items-center gap-x-3 gap-y-1">
+                    <a
+                      className="focus-gold rounded break-all transition-colors hover:text-ink"
+                      href="mailto:contato@joiasolucoes.com.br"
+                    >
+                      contato@joiasolucoes.com.br
+                    </a>
+                    <CopyEmail />
+                  </span>
                 </li>
+
                 <li className="flex items-start gap-3">
                   <MapPin size={18} className="mt-0.5 shrink-0 text-gold" />
                   Atendimento remoto para todo o Brasil

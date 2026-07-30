@@ -576,7 +576,7 @@ export function ChallengeSelector() {
   return (
     <section
       id="desafios"
-      className="surface-deep section-pad relative overflow-hidden"
+      className="surface-deep section-pad relative overflow-hidden scroll-mt-24"
       aria-labelledby="challenge-selector-title"
     >
       <div className="grid-tech pointer-events-none absolute inset-0 opacity-35" />

@@ -1,5 +1,5 @@
-export const WHATSAPP_NUMBER = "5532998848940";
-export const WHATSAPP_DISPLAY = "+55 32 99884-8940";
+export const WHATSAPP_NUMBER = "5532999568866";
+export const WHATSAPP_DISPLAY = "+55 32 99956-8866";
 export const INSTAGRAM_URL = "https://www.instagram.com/joia.solucoes";
 export const INSTAGRAM_HANDLE = "@joia.solucoes";
 export const SITE_URL = "https://www.joiasolucoes.com.br";
@@ -229,6 +229,30 @@ export const CASES = [
     areas: ["Marketing", "Comercial"],
     capabilities: ["React", "Experiência responsiva", "SEO básico"],
     status: "Site publicado e disponível para evoluções.",
+  },
+  {
+    slug: "helpsmart",
+    name: "Help Smart",
+    category: "Sistema sob medida",
+    description:
+      "Sistema de gestão personalizado para assistência técnica: produtos, vendas e ordens de serviço em uma única plataforma.",
+    deliveries: [
+      "Gestão de produtos",
+      "Controle de vendas",
+      "Ordens de serviço",
+      "Acessos por perfil",
+    ],
+    context:
+      "Assistência técnica precisando controlar produtos, vendas e ordens de serviço em um só lugar.",
+    challenge:
+      "Nenhum sistema de prateleira encaixava na forma como a operação realmente funciona: sempre faltava uma etapa ou sobrava complexidade.",
+    approach:
+      "Mapeamento do fluxo real da assistência, definição das etapas de atendimento e construção sob medida, validando cada módulo com quem usa no dia a dia.",
+    solution:
+      "Plataforma web personalizada que unifica catálogo de produtos, registro de vendas e o ciclo completo das ordens de serviço, com login e permissões por perfil.",
+    areas: ["Operação", "Comercial", "Atendimento"],
+    capabilities: ["React", "TypeScript", "Supabase", "Autenticação"],
+    status: "Sistema em uso, com evoluções contínuas.",
   },
 ];
 

@@ -82,7 +82,7 @@ const CRITERIA = [
 function Solucoes() {
   return (
     <>
-      <section className="surface-night relative overflow-hidden pt-40 pb-24">
+      <section className="surface-night relative overflow-hidden page-hero-pad">
         <div className="grid-tech pointer-events-none absolute inset-0 opacity-60" />
         <div className="shell relative">
           <Reveal>
@@ -100,13 +100,34 @@ function Solucoes() {
         </div>
       </section>
 
+      <nav
+        aria-label="Atalhos para os pilares"
+        className="surface-soft seam-top sticky top-16 z-30 border-b border-line-light/70 bg-soft/90 backdrop-blur-md"
+      >
+        <div className="shell flex snap-x snap-mandatory gap-2 overflow-x-auto py-3 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+          {PILLARS.map((pillar, i) => (
+            <a
+              key={pillar.id}
+              href={`#${pillar.id}`}
+              className="focus-gold inline-flex min-h-11 shrink-0 snap-start items-center gap-2 rounded-full border border-line-light bg-white px-4 text-xs font-medium text-ink-soft transition-colors hover:border-gold/60 hover:text-ink"
+            >
+              <span className="font-mono text-[0.65rem] text-gold">
+                {String(i + 1).padStart(2, "0")}
+              </span>
+              {pillar.title}
+            </a>
+          ))}
+        </div>
+      </nav>
+
       <section className="surface-soft section-pad">
         <div className="shell space-y-20">
+
           {PILLARS.map((pillar, i) => {
             const Icon = PILLAR_ICONS[pillar.icon as keyof typeof PILLAR_ICONS];
             return (
               <Reveal key={pillar.id} as="section">
-                <div id={pillar.id} className="scroll-mt-28 grid gap-10 lg:grid-cols-[0.85fr_1.15fr]">
+                <div id={pillar.id} className="scroll-mt-44 grid gap-10 lg:grid-cols-[0.85fr_1.15fr]">
                   <div>
                     <span className="label-mono text-ink-soft/70">
                       Pilar {String(i + 1).padStart(2, "0")}
@@ -225,7 +246,7 @@ function Solucoes() {
             </h2>
           </Reveal>
           <Reveal delay={0.1}>
-            <Accordion type="single" collapsible className="w-full">
+            <Accordion type="single" collapsible defaultValue="faq-0" className="w-full">
               {FAQ.map((f, i) => (
                 <AccordionItem key={f.q} value={`faq-${i}`} className="border-line-light">
                   <AccordionTrigger className="text-left text-base font-semibold text-ink hover:no-underline">

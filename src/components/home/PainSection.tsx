@@ -7,14 +7,7 @@ import {
   useScroll,
 } from "framer-motion";
 import useEmblaCarousel from "embla-carousel-react";
-import {
-  RefreshCw,
-  FileSpreadsheet,
-  UserRound,
-  Unplug,
-  GaugeCircle,
-  EyeOff,
-} from "lucide-react";
+import { RefreshCw, FileSpreadsheet, UserRound, Unplug, GaugeCircle, EyeOff } from "lucide-react";
 import { Eyebrow } from "@/components/site/ActionLink";
 
 const PAINS = [
@@ -107,8 +100,13 @@ export function PainSection() {
 
   return (
     <section
+      id="dores"
       ref={sectionRef}
-      className={reduce ? "surface-soft relative" : "surface-soft relative h-[600svh]"}
+      className={
+        reduce
+          ? "surface-soft relative scroll-mt-24"
+          : "surface-soft relative h-[600svh] scroll-mt-24"
+      }
       aria-labelledby="pain-section-title"
     >
       <div

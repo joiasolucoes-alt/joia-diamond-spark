@@ -691,7 +691,7 @@ export function SolutionsSection() {
     <section
       ref={sectionRef}
       id="solucoes"
-      className="surface-deep relative overflow-clip"
+      className="surface-deep relative overflow-clip scroll-mt-24"
       aria-label="Pilares de soluções da JoIA"
     >
       <AmbientLayer activeIndex={activeIndex} />

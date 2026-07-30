@@ -5,6 +5,13 @@ import { ArrowRight, Minus, Plus } from "lucide-react";
 import { Reveal } from "@/components/site/motion";
 import { ActionLink, Eyebrow } from "@/components/site/ActionLink";
 import { CaseMockup } from "@/components/site/CaseMockup";
+import granelSite from "@/assets/granel-piscinas-site.jpg.asset.json";
+import helpsmartSite from "@/assets/helpsmart-site.jpg.asset.json";
+
+const CASE_IMAGES: Record<string, string> = {
+  "granel-piscinas": granelSite.url,
+  helpsmart: helpsmartSite.url,
+};
 import { CASES } from "@/lib/site";
 
 const TITLE = "Projetos e cases — JoIA Soluções Empresariais";
@@ -40,7 +47,11 @@ function CaseBlock({ index }: { index: number }) {
     >
       <div className="grid gap-10 lg:grid-cols-[1fr_1fr] lg:items-center">
         <div className={index % 2 === 1 ? "lg:order-last" : ""}>
-          <CaseMockup variant={VARIANTS[index % 3]} />
+          <CaseMockup
+            variant={VARIANTS[index % 3]}
+            image={CASE_IMAGES[c.slug]}
+            imageAlt={`Interface do projeto ${c.name}`}
+          />
         </div>
         <div>
           <p className="label-mono text-gold">{c.category}</p>
@@ -112,7 +123,7 @@ function CaseBlock({ index }: { index: number }) {
 function Cases() {
   return (
     <>
-      <section className="surface-night relative overflow-hidden pt-40 pb-24">
+      <section className="surface-night relative overflow-hidden page-hero-pad">
         <div className="grid-tech pointer-events-none absolute inset-0 opacity-60" />
         <div className="shell relative">
           <Reveal>

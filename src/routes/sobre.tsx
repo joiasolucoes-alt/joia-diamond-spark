@@ -55,7 +55,7 @@ const PRINCIPLES = [
 function Sobre() {
   return (
     <>
-      <section className="surface-night relative overflow-hidden pt-40 pb-24">
+      <section className="surface-night relative overflow-hidden page-hero-pad">
         <div className="grid-tech pointer-events-none absolute inset-0 opacity-60" />
         <div className="shell relative grid gap-12 lg:grid-cols-[1.15fr_0.85fr] lg:items-center">
           <Reveal>
@@ -146,7 +146,7 @@ function Sobre() {
                 key={f.name}
                 className="flex gap-6 rounded-xl border border-line-light bg-white p-8"
               >
-                <Monogram initials={f.initials} />
+                <Monogram initials={f.initials} photo={f.photo} name={f.name} />
                 <div>
                   <h3 className="h-card text-ink">{f.name}</h3>
                   <p className="mt-2 text-sm font-semibold text-ink">{f.specialty}</p>
