@@ -55,6 +55,31 @@ const FIELDS: { name: Field; label: string; type?: string; optional?: boolean }[
   { name: "phone", label: "Telefone / WhatsApp", optional: true },
 ];
 
+const CONTACT_EMAIL = "contato@joiasolucoes.com.br";
+
+function CopyEmail() {
+  const [copied, setCopied] = useState(false);
+
+  return (
+    <button
+      type="button"
+      onClick={async () => {
+        try {
+          await navigator.clipboard.writeText(CONTACT_EMAIL);
+          setCopied(true);
+          window.setTimeout(() => setCopied(false), 2000);
+        } catch {
+          setCopied(false);
+        }
+      }}
+      className="focus-gold inline-flex min-h-11 items-center gap-1.5 rounded-full border border-line-light px-3 text-xs font-medium text-ink-soft transition-colors hover:border-gold/60 hover:text-ink"
+    >
+      {copied ? <Check size={13} className="text-gold" /> : <Copy size={13} />}
+      {copied ? "Copiado" : "Copiar"}
+    </button>
+  );
+}
+
 const inputClass =
   "focus-gold min-h-12 w-full rounded-lg border bg-white px-4 py-3 text-[0.95rem] text-ink outline-none transition-colors placeholder:text-ink-soft/50";
 
