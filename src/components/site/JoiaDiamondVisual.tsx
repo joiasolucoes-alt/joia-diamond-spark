@@ -80,22 +80,58 @@ const fragments = [
 
 export function JoiaDiamondVisual({ className }: { className?: string }) {
   const reduce = useReducedMotion();
-  const [tilt, setTilt] = useState({ x: 0, y: 0 });
   const ref = useRef<HTMLDivElement>(null);
 
+  /* normalized pointer offset (-1..1) — motion values, so no React re-renders */
+  const px = useMotionValue(0);
+  const py = useMotionValue(0);
+  /* artwork size ratio: keeps the parallax proportional on every screen */
+  const scale = useMotionValue(0);
+
+  const sx = useSpring(useTransform([px, scale], ([p, s]: number[]) => p * TILT_X * s), SPRING);
+  const sy = useSpring(useTransform([py, scale], ([p, s]: number[]) => p * TILT_Y * s), SPRING);
+
   useEffect(() => {
-    if (reduce) return;
     const el = ref.current;
     if (!el) return;
-    const onMove = (e: MouseEvent) => {
-      const r = el.getBoundingClientRect();
-      const dx = (e.clientX - (r.left + r.width / 2)) / r.width;
-      const dy = (e.clientY - (r.top + r.height / 2)) / r.height;
-      setTilt({ x: Math.max(-1, Math.min(1, dx)), y: Math.max(-1, Math.min(1, dy)) });
+
+    // artwork viewBox is 600 units wide -> px per unit
+    const ro = new ResizeObserver(([entry]) => {
+      scale.set(entry.contentRect.width / 600);
+    });
+    ro.observe(el);
+
+    if (reduce || !window.matchMedia("(pointer: fine)").matches) {
+      return () => ro.disconnect();
+    }
+
+    let frame = 0;
+    const onMove = (e: PointerEvent) => {
+      if (frame) return;
+      frame = requestAnimationFrame(() => {
+        frame = 0;
+        const r = el.getBoundingClientRect();
+        if (!r.width || !r.height) return;
+        const dx = (e.clientX - (r.left + r.width / 2)) / r.width;
+        const dy = (e.clientY - (r.top + r.height / 2)) / r.height;
+        px.set(Math.max(-1, Math.min(1, dx)));
+        py.set(Math.max(-1, Math.min(1, dy)));
+      });
     };
-    window.addEventListener("mousemove", onMove);
-    return () => window.removeEventListener("mousemove", onMove);
-  }, [reduce]);
+    const onLeave = () => {
+      px.set(0);
+      py.set(0);
+    };
+
+    window.addEventListener("pointermove", onMove, { passive: true });
+    document.addEventListener("pointerleave", onLeave);
+    return () => {
+      if (frame) cancelAnimationFrame(frame);
+      window.removeEventListener("pointermove", onMove);
+      document.removeEventListener("pointerleave", onLeave);
+      ro.disconnect();
+    };
+  }, [reduce, px, py, scale]);
 
   const draw = (delay: number, duration = 0.9) =>
     reduce
@@ -103,20 +139,20 @@ export function JoiaDiamondVisual({ className }: { className?: string }) {
       : {
           pathLength: 1,
           opacity: 1,
-          transition: { pathLength: { duration, delay, ease: EASE }, opacity: { duration: 0.3, delay } },
+          transition: {
+            pathLength: { duration, delay, ease: EASE },
+            opacity: { duration: 0.35, delay, ease: "linear" },
+          },
         };
 
   return (
     <div ref={ref} className={className} aria-hidden="true">
       <motion.svg
         viewBox="0 0 600 600"
-        className="h-full w-full overflow-visible"
-        style={
-          reduce
-            ? undefined
-            : { transform: `translate3d(${tilt.x * 10}px, ${tilt.y * 8}px, 0)` }
-        }
+        className="h-full w-full overflow-visible [will-change:transform]"
+        style={reduce ? undefined : { x: sx, y: sy }}
       >
+
         <defs>
           <linearGradient id="joia-gold" x1="0" y1="0" x2="1" y2="1">
             <stop offset="0%" stopColor="var(--gold-light)" />
