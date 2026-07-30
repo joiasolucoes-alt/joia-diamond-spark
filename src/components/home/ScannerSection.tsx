@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useMemo, useRef, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { MessageCircle, RotateCcw } from "lucide-react";
 import { Reveal } from "@/components/site/motion";
