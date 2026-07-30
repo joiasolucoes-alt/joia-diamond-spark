@@ -6,6 +6,12 @@ import { Reveal } from "@/components/site/motion";
 import { ActionLink, Eyebrow } from "@/components/site/ActionLink";
 import { CaseMockup } from "@/components/site/CaseMockup";
 import granelSite from "@/assets/granel-piscinas-site.jpg.asset.json";
+import helpsmartSite from "@/assets/helpsmart-site.jpg.asset.json";
+
+const CASE_IMAGES: Record<string, string> = {
+  "granel-piscinas": granelSite.url,
+  helpsmart: helpsmartSite.url,
+};
 import { CASES } from "@/lib/site";
 
 const TITLE = "Projetos e cases — JoIA Soluções Empresariais";
@@ -43,8 +49,8 @@ function CaseBlock({ index }: { index: number }) {
         <div className={index % 2 === 1 ? "lg:order-last" : ""}>
           <CaseMockup
             variant={VARIANTS[index % 3]}
-            image={c.slug === "granel-piscinas" ? granelSite.url : undefined}
-            imageAlt={`Site institucional da ${c.name}`}
+            image={CASE_IMAGES[c.slug]}
+            imageAlt={`Interface do projeto ${c.name}`}
           />
         </div>
         <div>
