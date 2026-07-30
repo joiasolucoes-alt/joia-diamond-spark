@@ -146,7 +146,7 @@ function Sobre() {
                 key={f.name}
                 className="flex gap-6 rounded-xl border border-line-light bg-white p-8"
               >
-                <Monogram initials={f.initials} />
+                <Monogram initials={f.initials} photo={f.photo} name={f.name} />
                 <div>
                   <h3 className="h-card text-ink">{f.name}</h3>
                   <p className="mt-2 text-sm font-semibold text-ink">{f.specialty}</p>

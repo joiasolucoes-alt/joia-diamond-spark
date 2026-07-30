@@ -1,5 +1,5 @@
-export const WHATSAPP_NUMBER = "5532998848940";
-export const WHATSAPP_DISPLAY = "+55 32 99884-8940";
+export const WHATSAPP_NUMBER = "5532999568866";
+export const WHATSAPP_DISPLAY = "+55 32 99956-8866";
 export const INSTAGRAM_URL = "https://www.instagram.com/joia.solucoes";
 export const INSTAGRAM_HANDLE = "@joia.solucoes";
 export const SITE_URL = "https://www.joiasolucoes.com.br";
