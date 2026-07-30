@@ -1,9 +1,40 @@
 /** Abstract interface mockups — no invented screens, data or metrics. */
-export function CaseMockup({ variant }: { variant: "data" | "system" | "site" }) {
+export function CaseMockup({
+  variant,
+  image,
+  imageAlt,
+}: {
+  variant: "data" | "system" | "site";
+  image?: string;
+  imageAlt?: string;
+}) {
+  if (image) {
+    return (
+      <div className="relative aspect-[16/10] w-full overflow-hidden rounded-lg border border-line-dark bg-night">
+        <div className="absolute inset-0 p-3">
+          <div className="flex h-full w-full flex-col overflow-hidden rounded-md border border-line-dark bg-deep">
+            <div className="flex items-center gap-1.5 border-b border-line-dark px-3 py-2">
+              <span className="h-2 w-2 rounded-full bg-gold/80" />
+              <span className="h-2 w-2 rounded-full bg-white/25" />
+              <span className="h-2 w-2 rounded-full bg-white/25" />
+            </div>
+            <img
+              src={image}
+              alt={imageAlt ?? ""}
+              loading="lazy"
+              className="h-full w-full object-cover object-top"
+            />
+          </div>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="relative aspect-[16/10] w-full overflow-hidden rounded-lg border border-line-dark bg-night">
       <div className="grid-tech absolute inset-0 opacity-60" />
       <svg viewBox="0 0 480 300" className="relative h-full w-full" aria-hidden="true">
+
         <rect
           x="16"
           y="16"
