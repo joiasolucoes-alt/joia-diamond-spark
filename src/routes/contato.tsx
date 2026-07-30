@@ -1,7 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useState } from "react";
 import { z } from "zod";
-import { Mail, MapPin, MessageCircle, Send } from "lucide-react";
+import { Check, Copy, Loader2, Mail, MapPin, MessageCircle, Send } from "lucide-react";
 import { Reveal } from "@/components/site/motion";
 import { ActionLink, Eyebrow } from "@/components/site/ActionLink";
 import { WHATSAPP_DISPLAY, whatsappLink } from "@/lib/site";
