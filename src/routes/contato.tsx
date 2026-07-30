@@ -4,7 +4,14 @@ import { z } from "zod";
 import { Mail, MapPin, MessageCircle, Send } from "lucide-react";
 import { Reveal } from "@/components/site/motion";
 import { ActionLink, Eyebrow } from "@/components/site/ActionLink";
-import { CHALLENGES, CONTACT, whatsappLink } from "@/lib/site";
+import { WHATSAPP_DISPLAY, whatsappLink } from "@/lib/site";
+
+const CHALLENGES = [
+  "Organizar minha operação",
+  "Automatizar tarefas",
+  "Construir uma solução digital",
+  "Monitorar minha tecnologia",
+];
 
 const TITLE = "Contato — JoIA Soluções Empresariais";
 const DESC =
