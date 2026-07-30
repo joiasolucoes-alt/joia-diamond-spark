@@ -9,7 +9,7 @@ const VARIANTS = ["data", "system", "site"] as const;
 
 export function CasesSection() {
   return (
-    <section className="surface-soft section-pad">
+    <section id="cases" className="surface-soft section-pad scroll-mt-24">
       <div className="shell">
         <Reveal>
           <Eyebrow tone="muted">// Projetos</Eyebrow>

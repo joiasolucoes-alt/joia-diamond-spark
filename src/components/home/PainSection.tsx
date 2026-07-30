@@ -45,7 +45,7 @@ const PAINS = [
 
 export function PainSection() {
   return (
-    <section className="surface-soft section-pad relative overflow-hidden">
+    <section id="dores" className="surface-soft section-pad relative overflow-hidden scroll-mt-24">
       <div className="shell">
         <div className="grid gap-10 lg:grid-cols-[0.95fr_1.05fr] lg:items-end">
           <Reveal>

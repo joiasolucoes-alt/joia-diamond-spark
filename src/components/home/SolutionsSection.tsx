@@ -12,7 +12,7 @@ export const PILLAR_ICONS = {
 
 export function SolutionsSection() {
   return (
-    <section className="surface-soft section-pad">
+    <section id="solucoes" className="surface-soft section-pad scroll-mt-24">
       <div className="shell">
         <Reveal>
           <Eyebrow tone="muted">// O que construímos</Eyebrow>
