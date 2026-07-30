@@ -146,12 +146,12 @@ export function ScannerSection() {
             ))}
           </ol>
 
-          <div className="mt-9 flex flex-wrap items-center gap-3">
+          <div className="sticky bottom-0 -mx-6 mt-9 flex flex-wrap items-center gap-x-3 gap-y-2 border-t border-line-dark bg-deep/95 px-6 py-4 backdrop-blur-sm sm:static sm:mx-0 sm:border-0 sm:bg-transparent sm:px-0 sm:py-0 sm:backdrop-blur-none">
             <button
               type="button"
               disabled={!complete}
-              onClick={() => setSubmitted(true)}
-              className="focus-gold inline-flex min-h-12 items-center justify-center rounded-full bg-gold px-6 py-3 text-sm font-semibold text-night transition-all duration-300 hover:bg-gold-light disabled:cursor-not-allowed disabled:opacity-35"
+              onClick={showResult}
+              className="focus-gold inline-flex min-h-12 flex-1 items-center justify-center rounded-full bg-gold px-6 py-3 text-sm font-semibold text-night transition-all duration-300 hover:bg-gold-light disabled:cursor-not-allowed disabled:opacity-35 sm:flex-none"
             >
               Ver meu resultado
             </button>
@@ -168,8 +168,10 @@ export function ScannerSection() {
               </button>
             )}
             {!complete && (
-              <p className="text-xs text-on-dark-soft">
-                Responda todas as perguntas para ver o resultado.
+              <p aria-live="polite" className="w-full text-xs text-on-dark-soft sm:w-auto">
+                {remaining === 1
+                  ? "Falta 1 pergunta para ver o resultado."
+                  : `Faltam ${remaining} perguntas para ver o resultado.`}
               </p>
             )}
           </div>
@@ -178,19 +180,39 @@ export function ScannerSection() {
             {submitted && complete && (
               <motion.div
                 key={result.id}
-                initial={{ opacity: 0, y: 20, filter: "blur(8px)" }}
-                animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+                ref={resultRef}
+                initial={{ opacity: 0, y: 14 }}
+                animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0 }}
-                transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+                transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1] }}
                 role="status"
-                className="mt-8 rounded-lg border border-gold/40 bg-gold/5 p-7"
+                className="mt-8 scroll-mt-28 rounded-lg border border-gold/40 bg-gold/5 p-6 sm:p-7"
               >
                 <p className="label-mono text-gold">Resultado</p>
                 <h3 className="h-card mt-3 text-on-dark">{result.title}</h3>
-                <p className="mt-3 text-body text-on-dark-soft">{result.text}</p>
+
+                <div className="mt-5">
+                  <div className="flex items-center justify-between text-xs text-on-dark-soft">
+                    <span className="label-mono">Potencial identificado</span>
+                    <span className="font-mono text-gold">
+                      {Math.round((total / maxScore) * 100)}%
+                    </span>
+                  </div>
+                  <div className="mt-2 h-1.5 overflow-hidden rounded-full bg-night/50">
+                    <motion.div
+                      className="h-full rounded-full bg-gold"
+                      initial={{ width: 0 }}
+                      animate={{ width: `${(total / maxScore) * 100}%` }}
+                      transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1], delay: 0.15 }}
+                    />
+                  </div>
+                </div>
+
+                <p className="mt-5 text-body text-on-dark-soft">{result.text}</p>
                 <p className="mt-4 font-mono text-xs text-on-dark-soft/80">
                   Indicativo, não é um diagnóstico definitivo.
                 </p>
+
                 <ActionLink
                   href={whatsappLink(waMessage)}
                   external
