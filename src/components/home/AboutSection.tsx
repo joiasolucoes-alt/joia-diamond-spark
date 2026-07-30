@@ -78,7 +78,7 @@ export function AboutSection() {
               key={f.name}
               className="flex gap-6 rounded-xl border border-line-dark bg-night/50 p-7"
             >
-              <Monogram initials={f.initials} />
+              <Monogram initials={f.initials} photo={f.photo} name={f.name} />
               <div>
                 <h3 className="h-card text-on-dark">{f.name}</h3>
                 <p className="mt-2 text-sm font-medium text-gold">{f.specialty}</p>
