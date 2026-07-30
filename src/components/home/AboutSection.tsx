@@ -34,7 +34,7 @@ export function Monogram({ initials }: { initials: string }) {
 
 export function AboutSection() {
   return (
-    <section className="surface-deep section-pad relative overflow-hidden">
+    <section id="sobre-joia" className="surface-deep section-pad relative overflow-hidden scroll-mt-24">
       <div className="grid-tech pointer-events-none absolute inset-0 opacity-30" />
       <div className="shell relative grid gap-14 lg:grid-cols-[0.95fr_1.05fr]">
         <Reveal>

@@ -42,7 +42,7 @@ export function ChallengeSelector() {
   const current = OPTIONS.find((o) => o.id === active)!;
 
   return (
-    <section className="surface-deep section-pad relative overflow-hidden">
+    <section id="desafios" className="surface-deep section-pad relative overflow-hidden scroll-mt-24">
       <div className="grid-tech pointer-events-none absolute inset-0 opacity-40" />
       <div className="shell relative">
         <Reveal>

@@ -35,7 +35,7 @@ export function Reveal({
       className={className}
       initial="hidden"
       whileInView="visible"
-      viewport={{ once: true, margin: "-80px" }}
+      viewport={{ once: true, margin: "-50px" }}
       variants={revealVariants}
       transition={{ delay }}
     >
@@ -47,7 +47,7 @@ export function Reveal({
 export function Stagger({
   children,
   className,
-  gap = 0.09,
+  gap = 0.06,
   as = "div",
 }: {
   children: ReactNode;
@@ -65,7 +65,7 @@ export function Stagger({
       className={className}
       initial="hidden"
       whileInView="visible"
-      viewport={{ once: true, margin: "-60px" }}
+      viewport={{ once: true, margin: "-50px" }}
       variants={{
         hidden: {},
         visible: { transition: { staggerChildren: gap } },
