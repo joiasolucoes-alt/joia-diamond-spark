@@ -41,28 +41,28 @@ const PILLAR_NARRATIVE: Record<
     emphasis: "complexidade em direção.",
     code: "DIREÇÃO",
     atmosphere:
-      "radial-gradient(circle at 18% 34%, rgba(204, 163, 57, 0.2), transparent 34%), radial-gradient(circle at 82% 72%, rgba(38, 63, 112, 0.28), transparent 42%)",
+      "radial-gradient(circle at 18% 34%, rgba(233, 207, 110, 0.28), transparent 34%), radial-gradient(circle at 82% 72%, rgba(12, 27, 58, 0.11), transparent 42%)",
   },
   sistemas: {
     lead: "Sistemas que acompanham",
     emphasis: "o jeito real de operar.",
     code: "ESTRUTURA",
     atmosphere:
-      "radial-gradient(circle at 76% 24%, rgba(204, 163, 57, 0.18), transparent 32%), radial-gradient(circle at 22% 78%, rgba(44, 76, 132, 0.3), transparent 44%)",
+      "radial-gradient(circle at 76% 24%, rgba(233, 207, 110, 0.24), transparent 32%), radial-gradient(circle at 22% 78%, rgba(12, 27, 58, 0.12), transparent 44%)",
   },
   automacao: {
     lead: "Automação que devolve tempo",
     emphasis: "para o que importa.",
     code: "MOVIMENTO",
     atmosphere:
-      "radial-gradient(circle at 52% 18%, rgba(204, 163, 57, 0.22), transparent 31%), radial-gradient(circle at 84% 78%, rgba(36, 64, 118, 0.32), transparent 40%)",
+      "radial-gradient(circle at 52% 18%, rgba(233, 207, 110, 0.28), transparent 31%), radial-gradient(circle at 84% 78%, rgba(12, 27, 58, 0.12), transparent 40%)",
   },
   observabilidade: {
     lead: "Visibilidade para agir",
     emphasis: "antes que tudo pare.",
     code: "CONTROLE",
     atmosphere:
-      "radial-gradient(circle at 82% 48%, rgba(204, 163, 57, 0.2), transparent 34%), radial-gradient(circle at 14% 30%, rgba(48, 79, 139, 0.28), transparent 42%)",
+      "radial-gradient(circle at 82% 48%, rgba(233, 207, 110, 0.25), transparent 34%), radial-gradient(circle at 14% 30%, rgba(12, 27, 58, 0.11), transparent 42%)",
   },
 };
 
@@ -98,38 +98,31 @@ function PillarDetails({
         <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl border border-gold/35 bg-gold/10 text-gold">
           <Icon size={22} strokeWidth={1.35} aria-hidden="true" />
         </span>
-        <span className="font-mono text-[0.62rem] tracking-[0.18em] text-on-dark-soft">
+        <span className="font-mono text-[0.62rem] tracking-[0.18em] text-ink-soft">
           {String(PILLARS.indexOf(pillar) + 1).padStart(2, "0")} / 04
         </span>
       </div>
 
-      <h3
-        className={
-          compact ? "mt-6 text-2xl font-semibold text-on-dark" : "h-card mt-7 text-on-dark"
-        }
-      >
+      <h3 className={compact ? "mt-6 text-2xl font-semibold text-deep" : "h-card mt-7 text-deep"}>
         {pillar.title}
       </h3>
-      <p className="mt-4 text-[0.96rem] leading-relaxed text-on-dark-soft">{pillar.description}</p>
+      <p className="mt-4 text-[0.96rem] leading-relaxed text-ink-soft">{pillar.description}</p>
 
       <ul className="mt-6 grid gap-x-5 gap-y-2 sm:grid-cols-2">
         {pillar.items.map((item) => (
-          <li
-            key={item}
-            className="flex items-start gap-2 text-sm leading-relaxed text-on-dark-soft"
-          >
+          <li key={item} className="flex items-start gap-2 text-sm leading-relaxed text-ink-soft">
             <Check size={14} className="mt-1 shrink-0 text-gold" aria-hidden="true" />
             {item}
           </li>
         ))}
       </ul>
 
-      <div className="mt-7 border-t border-line-dark pt-6">
+      <div className="mt-7 border-t border-line-light pt-6">
         <ActionLink
           to="/solucoes"
           hash={pillar.id}
           variant="ghost-gold"
-          className="px-0 py-0 text-sm"
+          className="px-0 py-0 text-sm hover:text-deep"
         >
           Explorar este pilar
           <ArrowRight size={15} aria-hidden="true" />
@@ -165,7 +158,7 @@ function DynamicHeading({
         <h2
           id={id}
           className={[
-            "mt-5 max-w-4xl text-on-dark",
+            "mt-5 max-w-4xl text-deep",
             compact ? "text-[2.25rem] leading-[0.98] font-semibold sm:text-5xl" : "h-section",
           ].join(" ")}
         >
@@ -184,7 +177,7 @@ function AmbientLayer({ activeIndex }: { activeIndex: number }) {
   return (
     <>
       <div
-        className="grid-tech pointer-events-none absolute inset-0 opacity-30"
+        className="grid-tech-light pointer-events-none absolute inset-0 opacity-70"
         aria-hidden="true"
       />
       <AnimatePresence mode="wait" initial={false}>
@@ -201,13 +194,32 @@ function AmbientLayer({ activeIndex }: { activeIndex: number }) {
       </AnimatePresence>
       <motion.div
         aria-hidden="true"
-        className="pointer-events-none absolute -right-[0.06em] bottom-[-0.24em] font-mono text-[clamp(14rem,31vw,34rem)] leading-none text-white/[0.018]"
+        className="pointer-events-none absolute -right-[0.06em] bottom-[-0.24em] font-mono text-[clamp(14rem,31vw,34rem)] leading-none text-deep/[0.025]"
         animate={reducedMotion ? undefined : { opacity: [0.45, 0.8, 0.45] }}
         transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}
       >
         {String(activeIndex + 1).padStart(2, "0")}
       </motion.div>
     </>
+  );
+}
+
+function SectionTransition() {
+  return (
+    <div className="relative z-30 border-y border-deep/10 bg-white/75 backdrop-blur-sm">
+      <div className="shell flex min-h-16 items-center gap-3 py-4 sm:gap-5">
+        <span className="whitespace-nowrap font-mono text-[0.5rem] tracking-[0.1em] text-ink-soft uppercase sm:text-[0.68rem] sm:tracking-[0.18em]">
+          // Ponto de partida
+        </span>
+        <span className="relative h-px flex-1 overflow-visible bg-deep/15" aria-hidden="true">
+          <span className="absolute inset-y-0 left-0 w-1/2 bg-gradient-to-r from-gold via-gold-light to-transparent" />
+          <span className="absolute top-1/2 left-1/2 h-2.5 w-2.5 -translate-x-1/2 -translate-y-1/2 rotate-45 border border-gold bg-soft" />
+        </span>
+        <span className="whitespace-nowrap font-mono text-[0.5rem] tracking-[0.1em] text-deep uppercase sm:text-[0.68rem] sm:tracking-[0.18em]">
+          // O que construímos
+        </span>
+      </div>
+    </div>
   );
 }
 
@@ -230,17 +242,17 @@ function OrbitStage({
     >
       <div
         aria-hidden="true"
-        className="absolute inset-[14%] rounded-full border border-gold/15 shadow-[0_0_90px_rgba(204,163,57,0.08)]"
+        className="absolute inset-[14%] rounded-full border border-deep/10 shadow-[0_0_90px_rgba(204,163,57,0.12)]"
       />
       <motion.div
         aria-hidden="true"
-        className="absolute inset-[23%] rounded-full border border-dashed border-gold/25"
+        className="absolute inset-[23%] rounded-full border border-dashed border-gold/45"
         animate={reducedMotion ? undefined : { rotate: 360 }}
         transition={{ duration: 34, repeat: Infinity, ease: "linear" }}
       />
       <motion.div
         aria-hidden="true"
-        className="absolute inset-[31%] rounded-full border border-line-dark"
+        className="absolute inset-[31%] rounded-full border border-deep/15"
         animate={reducedMotion ? undefined : { rotate: -360 }}
         transition={{ duration: 24, repeat: Infinity, ease: "linear" }}
       >
@@ -259,7 +271,7 @@ function OrbitStage({
             animate={{ rotate: point.angle, opacity: isActive ? 0.85 : 0.3 }}
             transition={{ duration: reducedMotion ? 0 : 0.8, ease: EASE }}
           >
-            <span className="absolute inset-0 bg-gradient-to-r from-gold/55 via-gold/25 to-transparent" />
+            <span className="absolute inset-0 bg-gradient-to-r from-deep/50 via-gold/45 to-transparent" />
             {!reducedMotion ? (
               <motion.span
                 className="absolute top-1/2 left-0 h-1.5 w-1.5 -translate-y-1/2 rounded-full bg-gold shadow-[0_0_12px_var(--gold)]"
@@ -279,7 +291,7 @@ function OrbitStage({
 
       <motion.div
         aria-hidden="true"
-        className="absolute top-1/2 left-1/2 z-10 flex h-40 w-40 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full border border-gold/25 bg-night/85 shadow-[0_0_80px_rgba(204,163,57,0.16)] backdrop-blur-md"
+        className="absolute top-1/2 left-1/2 z-10 flex h-40 w-40 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full border border-gold/55 bg-white/90 shadow-[0_0_80px_rgba(204,163,57,0.2)] backdrop-blur-md"
         animate={
           reducedMotion
             ? undefined
@@ -315,8 +327,8 @@ function OrbitStage({
             className={[
               "focus-gold absolute z-20 w-[10.5rem] -translate-x-1/2 -translate-y-1/2 rounded-xl border p-3 text-left backdrop-blur-md transition-colors",
               isActive
-                ? "border-gold bg-gold text-night shadow-[0_16px_48px_-20px_rgba(204,163,57,0.75)]"
-                : "border-line-dark bg-night/80 text-on-dark hover:border-gold/55",
+                ? "border-deep bg-deep text-white shadow-[0_18px_50px_-22px_rgba(12,27,58,0.65)]"
+                : "border-deep/15 bg-white/85 text-deep shadow-[0_12px_32px_-24px_rgba(12,27,58,0.35)] hover:border-gold",
             ].join(" ")}
             animate={{
               left: `${point.left}%`,
@@ -331,7 +343,7 @@ function OrbitStage({
               <span
                 className={[
                   "font-mono text-[0.57rem] tracking-[0.14em]",
-                  isActive ? "text-night/65" : "text-gold",
+                  isActive ? "text-gold-light" : "text-gold",
                 ].join(" ")}
               >
                 {String(index + 1).padStart(2, "0")}
@@ -366,7 +378,7 @@ function DesktopExperience({
           <DynamicHeading activeIndex={activeIndex} id="solutions-orbit-title" />
           <div className="mb-2 flex shrink-0 items-center gap-4">
             <div
-              className="h-px w-24 overflow-hidden bg-line-dark"
+              className="h-px w-24 overflow-hidden bg-deep/15"
               role="progressbar"
               aria-label="Progresso dos pilares"
               aria-valuemin={1}
@@ -379,7 +391,7 @@ function DesktopExperience({
                 transition={{ duration: reducedMotion ? 0 : 0.4, ease: EASE }}
               />
             </div>
-            <span className="font-mono text-xs tracking-[0.16em] text-on-dark-soft">
+            <span className="font-mono text-xs tracking-[0.16em] text-ink-soft">
               {String(activeIndex + 1).padStart(2, "0")} / 04
             </span>
           </div>
@@ -397,7 +409,7 @@ function DesktopExperience({
           />
 
           <div
-            className="relative min-h-[31rem] overflow-hidden rounded-2xl border border-line-dark bg-night/65 p-8 shadow-[0_28px_90px_-55px_rgba(0,0,0,0.9)] backdrop-blur-xl"
+            className="relative min-h-[31rem] overflow-hidden rounded-2xl border border-deep/10 bg-white/85 p-8 shadow-[0_30px_90px_-58px_rgba(12,27,58,0.42)] backdrop-blur-xl"
             onPointerEnter={() => onPauseChange(true)}
             onPointerLeave={() => onPauseChange(false)}
           >
@@ -431,7 +443,7 @@ function DesktopExperience({
           </div>
         </div>
 
-        <p className="mt-2 text-center font-mono text-[0.58rem] tracking-[0.17em] text-on-dark-soft/65 uppercase">
+        <p className="mt-2 text-center font-mono text-[0.58rem] tracking-[0.17em] text-ink-soft/75 uppercase">
           Role para mover a órbita · clique para explorar · a composição avança automaticamente
         </p>
       </div>
@@ -464,7 +476,7 @@ function MobileExperience({
         </motion.div>
       </div>
 
-      <p className="mt-6 max-w-xl text-sm leading-relaxed text-on-dark-soft">
+      <p className="mt-6 max-w-xl text-sm leading-relaxed text-ink-soft">
         Arraste para navegar entre os pilares. Cada movimento reorganiza o sistema ao redor do
         diamante.
       </p>
@@ -492,8 +504,8 @@ function MobileExperience({
                   className={[
                     "relative h-full min-h-[36rem] overflow-hidden rounded-2xl border p-6 backdrop-blur-lg sm:p-8",
                     isActive
-                      ? "border-gold/60 bg-night/80 shadow-[0_24px_70px_-38px_rgba(204,163,57,0.45)]"
-                      : "border-line-dark bg-night/45",
+                      ? "border-gold/70 bg-white/90 shadow-[0_26px_70px_-42px_rgba(12,27,58,0.4)]"
+                      : "border-deep/10 bg-white/55",
                   ].join(" ")}
                 >
                   <motion.span
@@ -521,12 +533,12 @@ function MobileExperience({
               aria-current={index === activeIndex ? "step" : undefined}
               className={[
                 "focus-gold h-2 rounded-full transition-all duration-300",
-                index === activeIndex ? "w-9 bg-gold" : "w-2 bg-line-dark hover:bg-gold/55",
+                index === activeIndex ? "w-9 bg-deep" : "w-2 bg-deep/15 hover:bg-gold/65",
               ].join(" ")}
             />
           ))}
         </div>
-        <span className="font-mono text-xs tracking-[0.15em] text-on-dark-soft">
+        <span className="font-mono text-xs tracking-[0.15em] text-ink-soft">
           {String(activeIndex + 1).padStart(2, "0")} / 04
         </span>
       </div>
@@ -691,9 +703,10 @@ export function SolutionsSection() {
     <section
       ref={sectionRef}
       id="solucoes"
-      className="surface-deep relative overflow-clip scroll-mt-24"
+      className="surface-soft relative overflow-clip scroll-mt-24"
       aria-label="Pilares de soluções da JoIA"
     >
+      <SectionTransition />
       <AmbientLayer activeIndex={activeIndex} />
 
       <div
