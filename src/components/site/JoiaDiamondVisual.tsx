@@ -1,7 +1,18 @@
-import { motion, useReducedMotion } from "framer-motion";
-import { useEffect, useRef, useState } from "react";
+import {
+  motion,
+  useMotionValue,
+  useReducedMotion,
+  useSpring,
+  useTransform,
+} from "framer-motion";
+import { useEffect, useRef } from "react";
 
 const EASE = [0.22, 1, 0.36, 1] as const;
+/** Parallax amplitude expressed in SVG user units, so it scales with the artwork. */
+const TILT_X = 16;
+const TILT_Y = 12;
+const SPRING = { stiffness: 90, damping: 22, mass: 0.6 } as const;
+
 
 const OUTLINE = "M120 180 L480 180 L520 262 L300 486 L80 262 Z";
 
