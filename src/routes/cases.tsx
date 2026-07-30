@@ -5,6 +5,7 @@ import { ArrowRight, Minus, Plus } from "lucide-react";
 import { Reveal } from "@/components/site/motion";
 import { ActionLink, Eyebrow } from "@/components/site/ActionLink";
 import { CaseMockup } from "@/components/site/CaseMockup";
+import granelSite from "@/assets/granel-piscinas-site.jpg.asset.json";
 import { CASES } from "@/lib/site";
 
 const TITLE = "Projetos e cases — JoIA Soluções Empresariais";
@@ -40,7 +41,11 @@ function CaseBlock({ index }: { index: number }) {
     >
       <div className="grid gap-10 lg:grid-cols-[1fr_1fr] lg:items-center">
         <div className={index % 2 === 1 ? "lg:order-last" : ""}>
-          <CaseMockup variant={VARIANTS[index % 3]} />
+          <CaseMockup
+            variant={VARIANTS[index % 3]}
+            image={c.slug === "granel-piscinas" ? granelSite.url : undefined}
+            imageAlt={`Site institucional da ${c.name}`}
+          />
         </div>
         <div>
           <p className="label-mono text-gold">{c.category}</p>
