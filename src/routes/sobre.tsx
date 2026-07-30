@@ -61,13 +61,12 @@ function Sobre() {
           <Reveal>
             <Eyebrow>// Sobre a JoIA</Eyebrow>
             <h1 className="h-display mt-6 max-w-[15ch] text-on-dark">
-              Negócio e tecnologia na{" "}
-              <span className="editorial text-gold">mesma conversa.</span>
+              Negócio e tecnologia na <span className="editorial text-gold">mesma conversa.</span>
             </h1>
             <p className="text-lead mt-8 max-w-2xl text-on-dark-soft">
-              A JoIA nasceu para transformar problemas operacionais em soluções que funcionam
-              na prática. Unimos visão de negócio, processos, dados e capacidade técnica para
-              construir soluções adequadas à realidade de cada empresa.
+              A JoIA nasceu para transformar problemas operacionais em soluções que funcionam na
+              prática. Unimos visão de negócio, processos, dados e capacidade técnica para construir
+              soluções adequadas à realidade de cada empresa.
             </p>
           </Reveal>
           <Reveal delay={0.1} className="mx-auto w-full max-w-xs">
@@ -81,25 +80,24 @@ function Sobre() {
           <Reveal>
             <h2 className="label-mono text-gold">// Por que existimos</h2>
             <p className="text-body mt-5 text-ink-soft">
-              Muitas empresas sabem que perdem tempo e dinheiro na operação, mas não têm
-              clareza sobre onde nem sobre qual tecnologia resolveria. A JoIA existe para
-              ocupar exatamente esse espaço entre o problema de negócio e a solução técnica.
+              Muitas empresas sabem que perdem tempo e dinheiro na operação, mas não têm clareza
+              sobre onde nem sobre qual tecnologia resolveria. A JoIA existe para ocupar exatamente
+              esse espaço entre o problema de negócio e a solução técnica.
             </p>
           </Reveal>
           <Reveal delay={0.06}>
             <h2 className="label-mono text-gold">// Proposta de valor</h2>
             <p className="text-body mt-5 text-ink-soft">
-              Identificamos gargalos e construímos sistemas, automações e soluções digitais
-              sob medida para transformar perdas operacionais em eficiência, controle e
-              crescimento — com a tecnologia como meio, nunca como fim.
+              Identificamos gargalos e construímos sistemas, automações e soluções digitais sob
+              medida para transformar perdas operacionais em eficiência, controle e crescimento —
+              com a tecnologia como meio, nunca como fim.
             </p>
           </Reveal>
           <Reveal delay={0.12}>
             <h2 className="label-mono text-gold">// Forma de atuação</h2>
             <p className="text-body mt-5 text-ink-soft">
-              Começamos por enxergar a operação, priorizamos o que gera mais impacto,
-              construímos junto com a equipe e acompanhamos o resultado para seguir
-              evoluindo.
+              Começamos por enxergar a operação, priorizamos o que gera mais impacto, construímos
+              junto com a equipe e acompanhamos o resultado para seguir evoluindo.
             </p>
           </Reveal>
         </div>
@@ -114,14 +112,14 @@ function Sobre() {
               Por que <span className="editorial text-gold">JoIA</span>?
             </h2>
             <p className="text-body mt-6 max-w-xl text-on-dark-soft">
-              A escrita “JoIA” carrega o “IA” dentro da palavra: valor e inteligência
-              aplicada na mesma ideia. Uma joia não nasce pronta — ela é lapidada. É assim
-              que enxergamos o trabalho: lapidar o problema até encontrar a solução que
-              realmente serve para aquele negócio.
+              A escrita “JoIA” carrega o “IA” dentro da palavra: valor e inteligência aplicada na
+              mesma ideia. Uma joia não nasce pronta — ela é lapidada. É assim que enxergamos o
+              trabalho: lapidar o problema até encontrar a solução que realmente serve para aquele
+              negócio.
             </p>
             <p className="mt-5 max-w-xl text-[0.95rem] leading-relaxed text-on-dark-soft/80">
-              O nome também remete à resiliência de Jó — a capacidade de atravessar um
-              cenário difícil e sair dele com mais estrutura do que antes.
+              O nome também remete à resiliência de Jó — a capacidade de atravessar um cenário
+              difícil e sair dele com mais estrutura do que antes.
             </p>
           </Reveal>
           <Reveal delay={0.1} className="flex justify-center">
@@ -146,7 +144,12 @@ function Sobre() {
                 key={f.name}
                 className="flex gap-6 rounded-xl border border-line-light bg-white p-8"
               >
-                <Monogram initials={f.initials} photo={f.photo} name={f.name} />
+                <Monogram
+                  initials={f.initials}
+                  photo={f.photo}
+                  photoPosition={f.photoPosition}
+                  name={f.name}
+                />
                 <div>
                   <h3 className="h-card text-ink">{f.name}</h3>
                   <p className="mt-2 text-sm font-semibold text-ink">{f.specialty}</p>

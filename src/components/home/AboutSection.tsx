@@ -1,13 +1,12 @@
 import { ArrowRight } from "lucide-react";
 import { Reveal, Stagger, StaggerItem } from "@/components/site/motion";
 import { ActionLink, Eyebrow } from "@/components/site/ActionLink";
-import gabrielPhoto from "@/assets/gabriel-lage.jpg.asset.json";
-import matheusPhoto from "@/assets/matheus-morais.jpg.asset.json";
 
 export const FOUNDERS = [
   {
     initials: "GL",
-    photo: gabrielPhoto.url,
+    photo: "/team/gabriel-lage.jpg",
+    photoPosition: "50% 30%",
     name: "Gabriel Lage",
     specialty: "Especialista em tecnologia, IA e dados para negócios.",
     description:
@@ -15,7 +14,8 @@ export const FOUNDERS = [
   },
   {
     initials: "MM",
-    photo: matheusPhoto.url,
+    photo: "/team/matheus-morais.jpg",
+    photoPosition: "50% 24%",
     name: "Matheus Morais",
     specialty: "Especialista em compras, vendas, processos e gestão de equipes.",
     description:
@@ -26,20 +26,24 @@ export const FOUNDERS = [
 export function Monogram({
   initials,
   photo,
+  photoPosition,
   name,
 }: {
   initials: string;
   photo?: string;
+  photoPosition?: string;
   name?: string;
 }) {
   return (
-    <span className="relative block h-20 w-20 shrink-0 overflow-hidden rounded-lg border border-gold/40 bg-night">
+    <span className="relative block h-24 w-20 shrink-0 overflow-hidden rounded-lg border border-gold/40 bg-night sm:h-28 sm:w-24">
       {photo ? (
         <img
           src={photo}
           alt={`Retrato de ${name ?? initials}`}
           loading="lazy"
-          className="h-full w-full object-cover object-top"
+          decoding="async"
+          style={{ objectPosition: photoPosition }}
+          className="h-full w-full object-cover"
         />
       ) : (
         <span className="flex h-full w-full items-center justify-center font-serif text-2xl not-italic text-gold">
@@ -90,7 +94,12 @@ export function AboutSection() {
                 key={f.name}
                 className="flex min-w-0 flex-[0_0_88%] snap-center gap-4 rounded-xl border border-line-dark bg-night/50 p-5 sm:flex-[0_0_72%] sm:gap-6 sm:p-7 lg:flex-auto"
               >
-                <Monogram initials={f.initials} photo={f.photo} name={f.name} />
+                <Monogram
+                  initials={f.initials}
+                  photo={f.photo}
+                  photoPosition={f.photoPosition}
+                  name={f.name}
+                />
                 <div>
                   <h3 className="h-card text-on-dark">{f.name}</h3>
                   <p className="mt-2 text-sm font-medium text-gold">{f.specialty}</p>
