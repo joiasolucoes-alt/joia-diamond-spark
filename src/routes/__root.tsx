@@ -95,7 +95,30 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { property: "og:site_name", content: "JoIA Soluções Empresariais" },
       { property: "og:type", content: "website" },
       { property: "og:locale", content: "pt_BR" },
-      { name: "twitter:card", content: "summary_large_image" },
+      {
+        property: "og:image",
+        content: "https://www.joiasolucoes.com.br/joia-logo-social.png",
+      },
+      {
+        property: "og:image:secure_url",
+        content: "https://www.joiasolucoes.com.br/joia-logo-social.png",
+      },
+      { property: "og:image:type", content: "image/png" },
+      { property: "og:image:width", content: "1080" },
+      { property: "og:image:height", content: "1080" },
+      {
+        property: "og:image:alt",
+        content: "Logo da JoIA Soluções Empresariais",
+      },
+      { name: "twitter:card", content: "summary" },
+      {
+        name: "twitter:image",
+        content: "https://www.joiasolucoes.com.br/joia-logo-social.png",
+      },
+      {
+        name: "twitter:image:alt",
+        content: "Logo da JoIA Soluções Empresariais",
+      },
       { name: "theme-color", content: "#030713" },
       { name: "application-name", content: "JoIA Soluções Empresariais" },
       { name: "msapplication-config", content: "/browserconfig.xml" },
@@ -124,6 +147,8 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
           "@type": "Organization",
           name: "JoIA Soluções Empresariais",
           url: "https://www.joiasolucoes.com.br",
+          logo: "https://www.joiasolucoes.com.br/joia-logo-social.png",
+          image: "https://www.joiasolucoes.com.br/joia-logo-social.png",
           description:
             "Consultoria e tecnologia para transformar gargalos de negócio em processos, sistemas, automações e resultados.",
           sameAs: ["https://www.instagram.com/joia.solucoes"],
