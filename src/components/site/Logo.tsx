@@ -1,5 +1,4 @@
 import { Link } from "@tanstack/react-router";
-import markAsset from "@/assets/joia-mark.png.asset.json";
 import { cn } from "@/lib/utils";
 
 export function Logo({
@@ -19,12 +18,12 @@ export function Logo({
       className={cn("group flex items-center gap-3 focus-gold rounded-sm", className)}
     >
       <img
-        src={markAsset.url}
+        src="/joia-mark.png"
         alt=""
         aria-hidden="true"
-        width={40}
-        height={29}
-        className="h-8 w-auto shrink-0 transition-transform duration-500 group-hover:-translate-y-0.5"
+        width={50}
+        height={34}
+        className="h-9 w-auto shrink-0 object-contain transition-transform duration-500 group-hover:-translate-y-0.5"
       />
       <span className="flex flex-col leading-none">
         <span

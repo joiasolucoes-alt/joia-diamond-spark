@@ -10,6 +10,7 @@ export function Header() {
   const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
   const pathname = useRouterState({ select: (s) => s.location.pathname });
+  const hideLogoAtHero = pathname === "/" && !scrolled && !open;
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 24);
@@ -46,7 +47,14 @@ export function Header() {
       )}
     >
       <div className="shell flex h-20 items-center justify-between gap-6">
-        <Logo />
+        <Logo
+          className={cn(
+            "transition-[opacity,transform,visibility] duration-500",
+            hideLogoAtHero
+              ? "invisible -translate-y-2 opacity-0"
+              : "visible translate-y-0 opacity-100",
+          )}
+        />
 
         <nav aria-label="Navegação principal" className="hidden items-center gap-8 lg:flex">
           {NAV_ITEMS.map((item) => (

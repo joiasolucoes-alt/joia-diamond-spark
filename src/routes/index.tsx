@@ -59,6 +59,7 @@ function Hero() {
           initial={reduce ? undefined : "hidden"}
           animate={reduce ? undefined : "visible"}
           variants={{ visible: { transition: { staggerChildren: 0.11, delayChildren: 0.1 } } }}
+          className="relative lg:-left-8 xl:-left-14 2xl:-left-20"
         >
           <motion.p variants={item} transition={{ duration: 0.7, ease: EASE }} className="label-mono text-gold">
             Estratégia, tecnologia e execução
@@ -117,8 +118,43 @@ function Hero() {
           </motion.ul>
         </motion.div>
 
-        <div className="relative order-first lg:order-last">
-          <JoiaDiamondVisual className="mx-auto aspect-square w-[min(78vw,26rem)] lg:w-full lg:max-w-[34rem]" />
+        <div className="relative order-first lg:order-last lg:w-[118%] lg:-translate-x-[8%]">
+          <div
+            aria-hidden="true"
+            className="pointer-events-none absolute inset-[12%] rounded-full border border-gold/10"
+          />
+          <div
+            aria-hidden="true"
+            className="pointer-events-none absolute inset-[18%] rounded-full border border-dashed border-gold/15"
+          />
+          <span
+            className="pointer-events-none absolute top-[17%] left-1/2 z-10 -translate-x-1/2 select-none text-2xl font-medium tracking-[0.16em] text-on-dark sm:text-3xl"
+            style={{ fontFamily: '"Rethink Sans", sans-serif' }}
+          >
+            JoIA
+          </span>
+
+          <div
+            aria-hidden="true"
+            className="pointer-events-none absolute top-[29%] right-0 z-10 hidden items-center gap-2 border border-line-dark bg-night/75 px-3 py-2 backdrop-blur-sm xl:flex"
+          >
+            <span className="h-1.5 w-1.5 rounded-full bg-gold shadow-[0_0_10px_var(--gold)]" />
+            <span className="font-mono text-[0.58rem] tracking-[0.16em] text-on-dark-soft">
+              SISTEMAS SOB MEDIDA
+            </span>
+          </div>
+
+          <div
+            aria-hidden="true"
+            className="pointer-events-none absolute bottom-[18%] left-0 z-10 hidden items-center gap-2 border border-line-dark bg-night/75 px-3 py-2 backdrop-blur-sm xl:flex"
+          >
+            <span className="font-mono text-[0.58rem] tracking-[0.16em] text-on-dark-soft">
+              AUTOMAÇÃO · IA · DADOS
+            </span>
+            <span className="h-px w-8 bg-gold/60" />
+          </div>
+
+          <JoiaDiamondVisual className="mx-auto aspect-square w-[min(88vw,30rem)] lg:w-full lg:max-w-[42rem]" />
         </div>
       </div>
     </section>
