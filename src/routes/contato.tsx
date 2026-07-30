@@ -208,21 +208,21 @@ function Contato() {
                     target="_blank"
                     rel="noopener noreferrer"
                   >
-                    {CONTACT.whatsappDisplay}
+                    {WHATSAPP_DISPLAY}
                   </a>
                 </li>
                 <li className="flex items-start gap-3">
                   <Mail size={18} className="mt-0.5 shrink-0 text-gold" />
                   <a
                     className="focus-gold rounded transition-colors hover:text-ink"
-                    href={`mailto:${CONTACT.email}`}
+                    href="mailto:contato@joiasolucoes.com.br"
                   >
-                    {CONTACT.email}
+                    contato@joiasolucoes.com.br
                   </a>
                 </li>
                 <li className="flex items-start gap-3">
                   <MapPin size={18} className="mt-0.5 shrink-0 text-gold" />
-                  {CONTACT.location}
+                  Atendimento remoto para todo o Brasil
                 </li>
               </ul>
             </div>
