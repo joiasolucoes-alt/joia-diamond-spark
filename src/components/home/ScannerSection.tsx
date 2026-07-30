@@ -40,6 +40,7 @@ const RESULTS = [
 export function ScannerSection() {
   const [answers, setAnswers] = useState<Record<string, Answer>>({});
   const [submitted, setSubmitted] = useState(false);
+  const resultRef = useRef<HTMLDivElement>(null);
 
   const total = useMemo(
     () =>
@@ -52,9 +53,19 @@ export function ScannerSection() {
 
   const answered = Object.keys(answers).length;
   const complete = answered === SCANNER_QUESTIONS.length;
+  const remaining = SCANNER_QUESTIONS.length - answered;
+  const maxScore = SCANNER_QUESTIONS.length * 2;
   const result = total <= 4 ? RESULTS[0] : total <= 8 ? RESULTS[1] : RESULTS[2];
 
   const waMessage = `Olá! Concluí o Scanner JoIA de Oportunidades no site e o resultado foi "${result.title}". Gostaria de conversar sobre isso.`;
+
+  function showResult() {
+    setSubmitted(true);
+    window.requestAnimationFrame(() => {
+      resultRef.current?.scrollIntoView({ behavior: "smooth", block: "center" });
+    });
+  }
+
 
   return (
     <section id="scanner" className="surface-deep section-pad relative overflow-hidden scroll-mt-24">
