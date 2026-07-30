@@ -100,8 +100,29 @@ function Solucoes() {
         </div>
       </section>
 
+      <nav
+        aria-label="Atalhos para os pilares"
+        className="surface-soft seam-top sticky top-16 z-30 border-b border-line-light/70 bg-soft/90 backdrop-blur-md"
+      >
+        <div className="shell flex snap-x snap-mandatory gap-2 overflow-x-auto py-3 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+          {PILLARS.map((pillar, i) => (
+            <a
+              key={pillar.id}
+              href={`#${pillar.id}`}
+              className="focus-gold inline-flex min-h-11 shrink-0 snap-start items-center gap-2 rounded-full border border-line-light bg-white px-4 text-xs font-medium text-ink-soft transition-colors hover:border-gold/60 hover:text-ink"
+            >
+              <span className="font-mono text-[0.65rem] text-gold">
+                {String(i + 1).padStart(2, "0")}
+              </span>
+              {pillar.title}
+            </a>
+          ))}
+        </div>
+      </nav>
+
       <section className="surface-soft section-pad">
         <div className="shell space-y-20">
+
           {PILLARS.map((pillar, i) => {
             const Icon = PILLAR_ICONS[pillar.icon as keyof typeof PILLAR_ICONS];
             return (
